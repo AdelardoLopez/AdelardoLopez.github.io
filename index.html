@@ -1,0 +1,691 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Adelardo López Sirvent — Data Engineer &amp; Software Developer</title>
+<meta name="description" content="Software developer with an MSc in Data Science. I build internal data tools, API integrations and Power BI reporting that turn sales, pricing and inventory data into decisions.">
+<meta property="og:title" content="Adelardo López Sirvent — Data Engineer &amp; Software Developer">
+<meta property="og:description" content="Price intelligence for 30K+ SKUs across 7 sales channels, profit and break-even, stock reconciliation and an MCP server for AI.">
+<meta property="og:image" content="photo.jpg">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#eef1f2">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%23b85a1f'/%3E%3Ctext x='16' y='21' font-size='14' font-family='Arial' font-weight='700' text-anchor='middle' fill='white'%3EAL%3C/text%3E%3C/svg%3E">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one wide "patch bay" column; sections are numbered like cable runs; copper = signal, green = live. */
+:root{
+  --bg:#eef1f2; --surface:#ffffff; --ink:#14191d; --muted:#5b6670; --line:#d3d9dd;
+  --copper:#b85a1f; --copper-soft:#f3e2d4; --signal:#1f7a5a;
+  --display:"Familjen Grotesk",ui-sans-serif,system-ui,sans-serif;
+  --body:"IBM Plex Sans",ui-sans-serif,system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0f1417; --surface:#171e22; --ink:#e8ecee; --muted:#93a0a8; --line:#2a3439;
+  --copper:#e2894d; --copper-soft:#33241a; --signal:#4cc192; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f1417; --surface:#171e22; --ink:#e8ecee; --muted:#93a0a8; --line:#2a3439;
+  --copper:#e2894d; --copper-soft:#33241a; --signal:#4cc192; color-scheme:dark}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:70px}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.6;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:1100px;margin:0 auto}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--copper);outline-offset:3px;border-radius:4px}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;line-height:1.1;margin:0}
+.mono{font-family:var(--mono);font-size:.8rem;letter-spacing:.04em}
+button{font:inherit;color:inherit}
+
+/* nav */
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:color-mix(in srgb,var(--bg) 86%,transparent);
+  backdrop-filter:blur(10px);border-bottom:1px solid var(--line);margin-left:calc(-1*max(16px,env(safe-area-inset-left,0px)));margin-right:calc(-1*max(16px,env(safe-area-inset-right,0px)))}
+nav .wrap{display:flex;align-items:center;gap:16px;padding:10px max(16px,env(safe-area-inset-right,0px)) 10px max(16px,env(safe-area-inset-left,0px))}
+.logo{font-family:var(--display);font-weight:700;text-decoration:none;display:flex;gap:8px;align-items:center;margin-right:auto}
+.logo span{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--copper);color:var(--bg);font-size:.8rem}
+nav ul{display:flex;gap:4px;list-style:none;margin:0;padding:0}
+nav ul a{text-decoration:none;color:var(--muted);font-size:.88rem;white-space:nowrap;padding:6px 10px;border-radius:6px}
+nav ul a:hover,nav ul a.active{color:var(--ink);background:var(--surface)}
+nav ul a.active{box-shadow:inset 0 -2px 0 var(--copper)}
+.tools{display:flex;gap:6px}
+.seg{display:flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.seg button{background:transparent;border:0;padding:6px 10px;cursor:pointer;font-family:var(--mono);font-size:.75rem;color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.iconbtn{background:transparent;border:1px solid var(--line);border-radius:8px;width:34px;height:32px;cursor:pointer;display:grid;place-items:center;color:var(--ink)}
+@media(max-width:900px){nav ul{display:none}}
+.progress{position:absolute;left:0;bottom:-1px;height:2px;background:var(--copper);width:0}
+
+section{padding-block:72px;border-bottom:1px solid var(--line)}
+.eyebrow{display:flex;gap:10px;align-items:center;color:var(--copper);margin-bottom:14px}
+.eyebrow::after{content:"";flex:1;height:1px;background:repeating-linear-gradient(90deg,var(--copper) 0 6px,transparent 6px 12px);opacity:.5}
+h2{font-size:clamp(2rem,5vw,3rem);font-weight:700;margin-bottom:12px}
+h2 em,h1 em{font-style:normal;color:var(--copper)}
+.lead{color:var(--muted);max-width:62ch;margin:0 0 32px}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.15fr .85fr;gap:48px;align-items:center;padding-block:56px 40px}
+@media(max-width:860px){.hero{grid-template-columns:1fr;gap:36px}}
+.hero h1{font-size:clamp(2.7rem,7.5vw,5.2rem);font-weight:700;letter-spacing:-.025em}
+.roles{color:var(--muted);margin:16px 0 26px;font-size:1.05rem;max-width:52ch}
+.status{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border:1px solid var(--line);border-radius:99px;margin-bottom:22px;background:var(--surface);max-width:100%}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--signal);box-shadow:0 0 0 4px color-mix(in srgb,var(--signal) 25%,transparent);flex:none;animation:pulse 2s infinite}
+@keyframes pulse{50%{box-shadow:0 0 0 7px color-mix(in srgb,var(--signal) 0%,transparent)}}
+.ctas{display:flex;flex-wrap:wrap;gap:12px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 20px;border-radius:8px;text-decoration:none;font-weight:600;border:1px solid var(--ink);font-size:.95rem;cursor:pointer;background:transparent;color:var(--ink)}
+.btn.primary{background:var(--ink);color:var(--bg)}
+.btn:hover{border-color:var(--copper);color:var(--copper)}
+.btn.primary:hover{background:var(--copper);border-color:var(--copper);color:var(--bg)}
+.mini-stats{display:flex;flex-wrap:wrap;gap:22px;margin-top:30px;padding-top:20px;border-top:1px solid var(--line)}
+.mini-stats div{display:flex;flex-direction:column}
+.mini-stats b{font-family:var(--display);font-size:1.6rem;line-height:1;font-variant-numeric:tabular-nums}
+.mini-stats span{color:var(--muted);font-size:.82rem}
+
+/* avatar stage */
+.stage{position:relative;justify-self:center;width:min(360px,100%)}
+.screen{all:unset;cursor:pointer;display:block;width:100%;aspect-ratio:4/5;max-width:100%;border-radius:20px;overflow:hidden;position:relative;
+  background:radial-gradient(120% 80% at 50% 25%,var(--copper-soft),var(--surface) 70%);border:1px solid var(--line);box-shadow:0 20px 50px rgb(0 0 0/.10)}
+.screen:focus-visible{outline:2px solid var(--copper);outline-offset:4px}
+.screen canvas,.screen video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.rec{position:absolute;left:12px;top:12px;display:flex;align-items:center;gap:6px;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:3px 8px;color:var(--muted)}
+.rec i{width:7px;height:7px;border-radius:50%;background:var(--copper)}
+.bubble{margin-top:-46px;position:relative;z-index:2;margin-left:14px;margin-right:14px;background:var(--ink);color:var(--bg);padding:12px 14px;border-radius:12px;font-size:.93rem;line-height:1.45;min-height:3.2em;
+  box-shadow:0 10px 28px rgb(0 0 0/.2)}
+.bubble .who{font-family:var(--mono);font-size:.7rem;opacity:.65;display:block;margin-bottom:2px}
+.caret{display:inline-block;width:7px;height:1em;background:var(--copper);vertical-align:-2px;margin-left:2px;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.asks{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;justify-content:center}
+.ask{border:1px solid var(--line);background:var(--surface);border-radius:99px;padding:6px 12px;font-size:.82rem;cursor:pointer}
+.ask:hover{border-color:var(--copper);color:var(--copper)}
+.ask[aria-pressed="true"]{border-color:var(--copper);background:var(--copper-soft);color:var(--copper)}
+
+/* pipeline */
+.pipe{padding-block:8px 64px;border-bottom:1px solid var(--line)}
+.pipe-box{border:1px solid var(--line);border-radius:16px;background:var(--surface);padding:18px 18px 10px}
+.pipe-head{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;color:var(--muted);margin-bottom:6px}
+.pipe-scroll{overflow-x:auto}
+.pipe svg{display:block;min-width:720px;width:100%;height:auto}
+.flow{fill:none;stroke:var(--copper);stroke-width:2;stroke-dasharray:5 7;animation:flow 1.2s linear infinite}
+.flow.dim{stroke:var(--muted);opacity:.5}
+@keyframes flow{to{stroke-dashoffset:-24}}
+.node rect{fill:var(--bg);stroke:var(--line)}
+.node.hot rect{fill:var(--copper-soft);stroke:var(--copper)}
+.node text{fill:var(--ink);font-family:var(--mono);font-size:12px}
+.node text.sub{fill:var(--muted);font-size:10px}
+.node{cursor:pointer}
+.node:hover rect{stroke:var(--copper)}
+
+/* about + ID card */
+.about{display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:start}
+@media(max-width:860px){.about{grid-template-columns:1fr}}
+.about p{max-width:62ch}
+.facts{display:grid;grid-template-columns:auto 1fr;gap:6px 18px;margin:24px 0 0;padding-top:20px;border-top:1px solid var(--line)}
+.facts dt{color:var(--muted)}.facts dd{margin:0}
+.card{perspective:1200px;width:100%;max-width:400px;aspect-ratio:1.586;margin:0 auto;cursor:pointer}
+.card-in{position:relative;width:100%;height:100%;transition:transform .7s cubic-bezier(.2,.7,.2,1);transform-style:preserve-3d}
+.card.flip .card-in{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:14px;padding:18px;background:var(--surface);border:1px solid var(--line);
+  box-shadow:0 14px 34px rgb(0 0 0/.12);display:flex;flex-direction:column;justify-content:space-between;overflow:hidden}
+.face.back{transform:rotateY(180deg)}
+.face .top{display:flex;justify-content:space-between;color:var(--muted)}
+.stripe{height:6px;margin:0 -18px -18px;background:repeating-linear-gradient(90deg,var(--copper) 0 18px,var(--ink) 18px 22px)}
+.idrow{display:flex;gap:14px;align-items:center}
+.idphoto{width:64px;height:76px;object-fit:cover;object-position:50% 30%;border-radius:8px;background:var(--copper-soft);display:grid;place-items:center;font-family:var(--display);font-weight:700;font-size:1.4rem;color:var(--copper);flex:none}
+.idname{font-family:var(--display);font-weight:700;font-size:1.15rem;line-height:1.15}
+.idgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;color:var(--muted)}
+.idgrid b{display:block;font-family:var(--body);font-size:.85rem;font-weight:600;letter-spacing:0;color:var(--ink)}
+.back ol{margin:0;padding-left:18px;font-size:.84rem;line-height:1.5}
+.cardhint{text-align:center;color:var(--muted);margin-top:10px}
+
+/* stack */
+.filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.chip{font-family:var(--mono);font-size:.78rem;padding:6px 12px;border-radius:99px;border:1px solid var(--line);background:var(--surface);cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.panel{display:grid;grid-template-columns:repeat(auto-fill,minmax(108px,1fr));gap:8px;padding:14px;border-radius:12px;background:var(--surface);border:1px solid var(--line)}
+.port{all:unset;cursor:pointer;border:1px solid var(--line);border-radius:8px;padding:10px;display:flex;flex-direction:column;gap:2px;transition:opacity .2s,border-color .2s,transform .2s;min-width:0;position:relative}
+.port:hover{transform:translateY(-2px);border-color:var(--copper)}
+.port:focus-visible{outline:2px solid var(--copper);outline-offset:2px}
+.port .sym{font-family:var(--display);font-weight:700;font-size:1.4rem;line-height:1}
+.port .nm{font-size:.82rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.port .fam{color:var(--muted);font-family:var(--mono);font-size:.66rem}
+.port .led{position:absolute;right:9px;top:10px;width:7px;height:7px;border-radius:50%;background:var(--line)}
+.port.off{opacity:.2}
+.port.sel{border-color:var(--copper);background:var(--copper-soft)}
+.port.sel .led,.port.used .led{background:var(--copper)}
+.readout{margin-top:12px;padding:12px 14px;border-radius:10px;border:1px dashed var(--line);font-size:.92rem;display:flex;flex-wrap:wrap;gap:8px;align-items:center;min-height:50px}
+.readout b{font-family:var(--display)}
+.link{border:0;background:transparent;color:var(--copper);text-decoration:underline;text-underline-offset:3px;cursor:pointer;padding:0;font-size:.9rem}
+
+/* work: case studies */
+.cases{display:grid;grid-template-columns:290px 1fr;gap:20px;align-items:start}
+.case-list{display:flex;flex-direction:column;gap:6px;min-width:0}
+.case-btn{all:unset;cursor:pointer;display:grid;grid-template-columns:auto 1fr;gap:2px 12px;padding:12px 14px;border:1px solid transparent;border-radius:10px}
+.case-btn:hover{background:var(--surface)}
+.case-btn:focus-visible{outline:2px solid var(--copper)}
+.case-btn .n{font-family:var(--mono);font-size:.75rem;color:var(--muted);grid-row:span 2;padding-top:3px}
+.case-btn .t{font-family:var(--display);font-weight:600;font-size:1.02rem;line-height:1.25}
+.case-btn .m{font-family:var(--mono);font-size:.7rem;color:var(--muted)}
+.case-btn[aria-selected="true"]{background:var(--surface);border-color:var(--line);box-shadow:inset 3px 0 0 var(--copper)}
+.case-btn[aria-selected="true"] .n{color:var(--copper)}
+@media(max-width:860px){
+  .cases{grid-template-columns:1fr}
+  .case-list{flex-direction:row;overflow-x:auto;padding-bottom:6px}
+  .case-btn{flex:none;max-width:230px;border-color:var(--line)}
+  .case-btn[aria-selected="true"]{box-shadow:inset 0 -3px 0 var(--copper)}
+}
+.case{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:26px;display:grid;grid-template-columns:1fr 250px;gap:26px;min-width:0}
+@media(max-width:700px){.case{grid-template-columns:1fr;padding:20px}}
+.case > div{min-width:0}
+.case .meta{color:var(--muted)}
+.case h3{font-size:clamp(1.5rem,3vw,2rem);margin:6px 0 18px}
+.psi{display:grid;gap:14px}
+.psi div{display:grid;grid-template-columns:84px 1fr;gap:12px}
+.psi dt{font-family:var(--mono);font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--copper);padding-top:3px}
+.psi dd{margin:0}
+.psi ul{margin:0;padding-left:18px}
+@media(max-width:480px){.psi div{grid-template-columns:1fr;gap:2px}}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:18px}
+.tags span{font-family:var(--mono);font-size:.72rem;padding:3px 8px;border-radius:4px;background:var(--copper-soft);color:var(--copper)}
+.case .more{margin-top:14px;display:inline-block}
+.sketch{border:1px dashed var(--line);border-radius:12px;padding:14px;font-family:var(--mono);font-size:.74rem;color:var(--muted);display:flex;flex-direction:column;gap:8px;align-self:start;background:var(--bg)}
+.sketch .ttl{color:var(--ink);display:flex;justify-content:space-between}
+.bar{display:grid;grid-template-columns:1fr 96px;align-items:center;gap:8px}
+.bar i{display:block;height:8px;border-radius:2px;background:var(--copper)}
+.bar.alt i{background:var(--muted);opacity:.45}
+.big{font-family:var(--display);font-size:1.8rem;font-weight:700;color:var(--copper);line-height:1}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.grid3 div{border:1px solid var(--line);border-radius:4px;padding:6px;text-align:center;background:var(--surface)}
+.grid3 .bad{border-color:var(--copper);color:var(--copper)}
+.flag{font-size:.68rem}
+.term{color:var(--ink);line-height:1.5;white-space:pre-wrap}
+.term .p{color:var(--copper)}
+.term .ok{color:var(--signal)}
+
+/* timeline */
+.tl{list-style:none;margin:0;padding:0;position:relative}
+.tl::before{content:"";position:absolute;left:58px;top:6px;bottom:6px;width:2px;background:repeating-linear-gradient(var(--copper) 0 8px,transparent 8px 14px)}
+.tl li{display:grid;grid-template-columns:48px 1fr;gap:30px;padding-block:14px;position:relative}
+.tl li::before{content:"";position:absolute;left:53px;top:22px;width:12px;height:12px;border-radius:50%;background:var(--bg);border:2px solid var(--copper)}
+.tl li.now::before{background:var(--copper)}
+.tl .yr{font-family:var(--mono);font-weight:500;padding-top:2px;font-variant-numeric:tabular-nums}
+.tl h3{font-size:1.15rem}
+.tl .where{color:var(--muted);font-size:.92rem}
+.tl p{margin:6px 0 0;max-width:62ch}
+.kind{font-family:var(--mono);font-size:.68rem;text-transform:uppercase;letter-spacing:.08em;color:var(--copper)}
+
+/* numbers */
+.nums{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+@media(max-width:860px){.nums{grid-template-columns:repeat(2,1fr)}}
+.num{padding:20px;border-radius:12px;border:1px solid var(--line);background:var(--surface)}
+.num .v{font-family:var(--display);font-weight:700;font-size:clamp(2rem,5vw,2.8rem);color:var(--copper);line-height:1;font-variant-numeric:tabular-nums}
+.num p{margin:10px 0 0;font-size:.9rem;color:var(--muted)}
+
+/* off clock */
+.off{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+@media(max-width:860px){.off{grid-template-columns:1fr}}
+.off article{padding:20px;border-radius:12px;border:1px solid var(--line)}
+.off h3{font-size:1.2rem;margin:6px 0}
+.off p{margin:0;color:var(--muted);font-size:.94rem}
+.count{font-family:var(--mono);color:var(--signal)}
+.meter{height:6px;border-radius:3px;background:var(--line);margin-top:14px;overflow:hidden}
+.meter i{display:block;height:100%;background:var(--signal)}
+
+/* contact */
+.contact h2{font-size:clamp(2.4rem,7vw,4.4rem)}
+.links{display:flex;flex-wrap:wrap;gap:12px;margin-top:20px}
+.copyrow{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:20px}
+.copyrow code{font-family:var(--mono);padding:10px 14px;border-radius:8px;background:var(--surface);border:1px solid var(--line);user-select:all;max-width:100%;overflow-wrap:anywhere}
+footer{padding-block:28px;color:var(--muted);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+@media (prefers-reduced-motion:reduce){*,*::before{transition:none!important;animation:none!important}html{scroll-behavior:auto}}
+</style>
+
+</head>
+<body>
+<nav><div class="wrap">
+  <a class="logo" href="#top"><span>AL</span>Adelardo López</a>
+  <ul id="navlinks">
+    <li><a href="#about" data-i18n="nav.about">About</a></li><li><a href="#stack" data-i18n="nav.stack">Stack</a></li>
+    <li><a href="#work" data-i18n="nav.work">Work</a></li><li><a href="#path" data-i18n="nav.path">Path</a></li>
+    <li><a href="#numbers" data-i18n="nav.numbers">Numbers</a></li><li><a href="#contact" data-i18n="nav.contact">Contact</a></li>
+  </ul>
+  <div class="tools">
+    <div class="seg" role="group" aria-label="Language"><button id="lang-en" type="button" aria-pressed="true">EN</button><button id="lang-es" type="button" aria-pressed="false">ES</button></div>
+    <button class="iconbtn" id="themeBtn" type="button" aria-label="Toggle light or dark theme">◐</button>
+  </div>
+  <div class="progress" id="progress"></div>
+</div></nav>
+
+<main class="wrap" id="top">
+
+<header class="hero">
+  <div>
+    <div class="status mono"><span class="dot"></span><span data-i18n="hero.status">Software Developer @ Electriduct · Pompano Beach, FL</span></div>
+    <h1 data-i18n="hero.h1">Software that<br>runs on <em>data.</em></h1>
+    <p class="roles" data-i18n="hero.roles">Data Engineer · BI &amp; Power BI · Python / PHP Developer · MSc Data Science &amp; AI</p>
+    <div class="ctas">
+      <a class="btn primary" href="#work" data-i18n="hero.cta1">See the work</a>
+      <a class="btn" href="#contact" data-i18n="hero.cta2">Let's talk</a>
+      <a class="btn" href="Adelardo-Lopez-Sirvent-CV.pdf" target="_blank" rel="noopener" data-i18n="cv">Résumé (PDF) ↗</a>
+    </div>
+    <div class="mini-stats">
+      <div><b>4</b><span data-i18n="hero.s1">tools in production</span></div>
+      <div><b>7</b><span data-i18n="hero.s2">sales channels synced</span></div>
+      <div><b>2–3 wk</b><span data-i18n="hero.s3">saved per run</span></div>
+    </div>
+  </div>
+
+  <div class="stage">
+    <button class="screen" id="screen" type="button" aria-label="Talk to Adelardo's avatar">
+      <canvas id="avatarCanvas" width="360" height="450" aria-hidden="true"></canvas>
+      <!-- Drop hero.webm (Google Flow) next to this page and it replaces the canvas automatically -->
+      <video id="heroVideo" muted loop playsinline preload="auto" hidden><source src="hero.webm" type="video/webm"></video>
+      <span class="rec mono"><i></i><span data-i18n="hero.live">Live intro</span></span>
+    </button>
+    <div class="bubble" role="status" aria-live="polite"><span class="who mono">ADELARDO</span><span id="say"></span><span class="caret"></span></div>
+    <div class="asks" id="asks" role="group" aria-label="Ask the avatar"></div>
+  </div>
+</header>
+
+<div class="pipe">
+  <div class="pipe-box">
+    <div class="pipe-head mono"><span data-i18n="pipe.title">HOW MY DATA FLOWS AT ELECTRIDUCT</span><span data-i18n="pipe.hint">Click a node to open the project</span></div>
+    <div class="pipe-scroll">
+      <svg viewBox="0 0 960 250" role="img" aria-label="Data pipeline: sales channels, warehouses and phone API feed an ETL layer into MySQL, which powers price, profit, stock and AI reports.">
+        <g id="flows">
+          <path class="flow" d="M150 40 C230 40,240 120,320 120"/>
+          <path class="flow" d="M150 125 C230 125,240 125,320 125"/>
+          <path class="flow" d="M150 210 C230 210,240 130,320 130"/>
+          <path class="flow" d="M470 125 L540 125"/>
+          <path class="flow" d="M680 120 C730 120,730 30,790 30"/>
+          <path class="flow" d="M680 122 C730 122,730 90,790 90"/>
+          <path class="flow" d="M680 128 C730 128,730 155,790 155"/>
+          <path class="flow" d="M680 130 C730 130,730 220,790 220"/>
+        </g>
+        <g class="node" data-go="price"><rect x="10" y="18" width="140" height="46" rx="8"/><text x="22" y="38">7 sales channels</text><text class="sub" x="22" y="54">Amazon · Walmart · eBay…</text></g>
+        <g class="node" data-go="stock"><rect x="10" y="102" width="140" height="46" rx="8"/><text x="22" y="122">2 warehouses</text><text class="sub" x="22" y="138">QoH · virtual stock</text></g>
+        <g class="node" data-go="ring"><rect x="10" y="187" width="140" height="46" rx="8"/><text x="22" y="207">RingCentral API</text><text class="sub" x="22" y="223">call logs</text></g>
+        <g class="node hot"><rect x="320" y="96" width="150" height="58" rx="8"/><text x="334" y="120">ETL layer</text><text class="sub" x="334" y="138">Python · PHP · cron</text></g>
+        <g class="node hot"><rect x="540" y="96" width="140" height="58" rx="8"/><text x="554" y="120">MySQL</text><text class="sub" x="554" y="138">normalized SKUs</text></g>
+        <g class="node" data-go="price"><rect x="790" y="10" width="160" height="40" rx="8"/><text x="802" y="35">Price Intelligence</text></g>
+        <g class="node" data-go="profit"><rect x="790" y="70" width="160" height="40" rx="8"/><text x="802" y="95">Profit / BEP · Power BI</text></g>
+        <g class="node" data-go="stock"><rect x="790" y="135" width="160" height="40" rx="8"/><text x="802" y="160">Stock reconciliation</text></g>
+        <g class="node" data-go="mcp"><rect x="790" y="200" width="160" height="40" rx="8"/><text x="802" y="225">QoH 3D · MCP → AI</text></g>
+      </svg>
+    </div>
+  </div>
+</div>
+
+<section id="about">
+  <div class="eyebrow mono">RUN 01 · <span data-i18n="nav.about">ABOUT</span></div>
+  <div class="about">
+    <div>
+      <h2 data-i18n="about.h2">Hi, I'm <em>Adelardo.</em></h2>
+      <p data-i18n="about.p1">Computer engineer and data scientist. I build internal tools that turn messy operational data into decisions: price intelligence across seven sales channels, profit and break-even reports, stock control and warehouse reconciliation.</p>
+      <p data-i18n="about.p2">I moved from Spain to Florida in 2026 to join Electriduct, a cable management company, where software development and data work are the same job. Before that I spent four years as a systems engineer at Cableworld, and I'm a member of Spain's national body of court IT expert witnesses.</p>
+      <dl class="facts">
+        <dt data-i18n="f.base">Based in</dt><dd data-i18n="f.baseV">Florida, USA · from Spain</dd>
+        <dt data-i18n="f.edu">Education</dt><dd data-i18n="f.eduV">MSc Data Science · BSc Computer Engineering (UPV)</dd>
+        <dt data-i18n="f.now">Now</dt><dd>Software Developer · Electriduct</dd>
+        <dt data-i18n="f.lang">Languages</dt><dd data-i18n="f.langV">Spanish (native) · English (B2)</dd>
+      </dl>
+    </div>
+    <div>
+      <div class="card" id="card" tabindex="0" role="button" aria-label="Flip the developer ID card">
+        <div class="card-in">
+          <div class="face front">
+            <div class="top mono"><span>DEVELOPER ID</span><span>AL-2026</span></div>
+            <div class="idrow">
+              <img class="idphoto" src="photo.jpg" alt="Adelardo López Sirvent">
+              <div><div class="idname">Adelardo López Sirvent</div><div class="mono" style="color:var(--muted)">Data · Software</div></div>
+            </div>
+            <div class="idgrid mono"><div>DEPT.<b>Data Eng.</b></div><div>SINCE<b>2021</b></div><div>STATUS<b style="color:var(--signal)">Open</b></div></div>
+            <div class="stripe"></div>
+          </div>
+          <div class="face back">
+            <div class="top mono"><span>IN SHORT</span><span>AL</span></div>
+            <ol>
+              <li>Software Developer, Electriduct (US)</li>
+              <li>4 internal data tools in 6 months</li>
+              <li>MSc thesis: credit-risk model</li>
+              <li>Court IT expert witness (CNIPJ)</li>
+              <li>Training for the Miami Marathon</li>
+            </ol>
+            <div class="stripe"></div>
+          </div>
+        </div>
+      </div>
+      <p class="cardhint mono" data-i18n="card.hint">Click or press Enter to flip</p>
+    </div>
+  </div>
+</section>
+
+<section id="stack">
+  <div class="eyebrow mono">RUN 02 · <span data-i18n="nav.stack">STACK</span></div>
+  <h2 data-i18n="stack.h2">The patch panel of my <em>stack.</em></h2>
+  <p class="lead" data-i18n="stack.lead">Every port is a tool I use in production or in my own projects. Pick one to see where it's wired in.</p>
+  <div class="filters" id="filters" role="group" aria-label="Filter stack"></div>
+  <div class="panel" id="panel"></div>
+  <div class="readout" id="readout" aria-live="polite"></div>
+</section>
+
+<section id="work">
+  <div class="eyebrow mono">RUN 03 · <span data-i18n="nav.work">WORK</span></div>
+  <h2 data-i18n="work.h2">Things I've <em>built.</em></h2>
+  <p class="lead" data-i18n="work.lead">Each project as a case: the problem, what I built and what changed. Sketches are illustrative, with anonymized numbers.</p>
+  <div class="cases">
+    <div class="case-list" id="caseList" role="tablist" aria-label="Projects"></div>
+    <article class="case" id="case" role="tabpanel"></article>
+  </div>
+</section>
+
+<section id="path">
+  <div class="eyebrow mono">RUN 04 · <span data-i18n="nav.path">PATH</span></div>
+  <h2 data-i18n="path.h2">The path so <em>far.</em></h2>
+  <p class="lead" data-i18n="path.lead">Roles and education, most recent first.</p>
+  <ol class="tl" id="tl"></ol>
+</section>
+
+<section id="numbers">
+  <div class="eyebrow mono">RUN 05 · <span data-i18n="nav.numbers">NUMBERS</span></div>
+  <h2 data-i18n="nums.h2">Proof, in <em>numbers.</em></h2>
+  <div class="nums">
+    <div class="num"><div class="v">2–3 wk</div><p data-i18n="n1">of manual comparison saved each time a tool runs</p></div>
+    <div class="num"><div class="v">30K+</div><p data-i18n="n2">SKUs compared across 7 sales channels</p></div>
+    <div class="num"><div class="v">967</div><p data-i18n="n3">direct calls a month tracked in my RingCentral dashboard</p></div>
+    <div class="num"><div class="v">1.5M+</div><p data-i18n="n4">loan records modeled for credit risk in my MSc thesis</p></div>
+  </div>
+</section>
+
+<section id="off">
+  <div class="eyebrow mono">RUN 06 · <span data-i18n="off.ey">OFF THE CLOCK</span></div>
+  <h2 data-i18n="off.h2">Off the <em>clock.</em></h2>
+  <div class="off">
+    <article><span class="count mono" id="race"></span><h3 data-i18n="off.m">Miami Marathon</h3><p data-i18n="off.mp">17-week plan with two gym days a week. Previous marathon: Elche-Alicante in 3:42.</p><div class="meter" aria-hidden="true"><i id="raceBar"></i></div></article>
+    <article><span class="count mono">Gemini · Google Flow · Claude Code</span><h3 data-i18n="off.ai">This portfolio</h3><p data-i18n="off.aip">Designed and shipped in a few hours with AI. The avatar wears clothes from my own digitized wardrobe.</p></article>
+  </div>
+</section>
+
+<section id="contact" class="contact">
+  <div class="eyebrow mono">RUN 07 · <span data-i18n="nav.contact">CONTACT</span></div>
+  <h2 data-i18n="c.h2">Let's wire something <em>together.</em></h2>
+  <p class="lead" data-i18n="c.lead">Open to remote data engineering and BI roles.</p>
+  <div class="copyrow"><code id="mail">adepas.lo@gmail.com</code><button class="btn" id="copyBtn" type="button" data-i18n="c.copy">Copy email</button><code>+1 954 312 8732</code></div>
+  <div class="links">
+    <a class="btn" href="Adelardo-Lopez-Sirvent-CV.pdf" target="_blank" rel="noopener" data-i18n="cv">Résumé (PDF) ↗</a>
+    <a class="btn primary" href="https://www.linkedin.com/in/adelardo-lopez-sirvent" target="_blank" rel="noopener">LinkedIn ↗</a>
+    <a class="btn" href="https://github.com/AdelardoLopez" target="_blank" rel="noopener">GitHub ↗</a>
+  </div>
+</section>
+
+<footer class="mono"><span>© 2026 Adelardo López Sirvent</span><a href="#top" data-i18n="foot">Back to top ↑</a></footer>
+</main>
+
+<script>
+(function(){
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const store={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+let lang=store.get('lang')==='es'?'es':'en';
+
+/* ---------- copy ---------- */
+const T={
+ "nav.about":["About","Sobre mí"],"nav.stack":["Stack","Stack"],"nav.work":["Work","Proyectos"],"nav.path":["Path","Trayectoria"],"nav.numbers":["Numbers","Cifras"],"nav.contact":["Contact","Contacto"],
+ "hero.status":["Software Developer @ Electriduct · Pompano Beach, FL","Software Developer @ Electriduct · Pompano Beach, FL"],
+ "hero.h1":["Software that<br>runs on <em>data.</em>","Software que<br>funciona con <em>datos.</em>"],
+ "hero.roles":["Data Engineer · BI &amp; Power BI · Python / PHP Developer · MSc Data Science &amp; AI","Data Engineer · BI y Power BI · Desarrollador Python / PHP · Máster en Ciencia de Datos e IA"],
+ "hero.cta1":["See the work","Ver proyectos"],"hero.cta2":["Let's talk","Hablemos"],
+ "hero.s1":["tools in production","herramientas en producción"],"hero.s2":["sales channels synced","canales de venta sincronizados"],"hero.s3":["saved per run","ahorradas por ejecución"],
+ "hero.live":["Live intro","Intro en vivo"],
+ "pipe.title":["HOW MY DATA FLOWS AT ELECTRIDUCT","CÓMO FLUYEN MIS DATOS EN ELECTRIDUCT"],"pipe.hint":["Click a node to open the project","Pulsa un nodo para abrir el proyecto"],
+ "about.h2":["Hi, I'm <em>Adelardo.</em>","Hola, soy <em>Adelardo.</em>"],
+ "about.p1":["Computer engineer and data scientist. I build internal tools that turn messy operational data into decisions: price intelligence across seven sales channels, profit and break-even reports, stock control and warehouse reconciliation.","Ingeniero informático y científico de datos. Construyo herramientas internas que convierten datos operativos desordenados en decisiones: inteligencia de precios en siete canales de venta, informes de rentabilidad y punto de equilibrio, control de stock y conciliación entre almacenes."],
+ "about.p2":["I moved from Spain to Florida in 2026 to join Electriduct, a cable management company, where software development and data work are the same job. Before that I spent four years as a systems engineer at Cableworld, and I'm a member of Spain's national body of court IT expert witnesses.","En 2026 me mudé de España a Florida para unirme a Electriduct, empresa de gestión de cableado, donde desarrollo de software y datos son el mismo trabajo. Antes pasé casi cuatro años como ingeniero de sistemas en Cableworld, y soy miembro del CNIPJ como perito judicial informático."],
+ "f.base":["Based in","Ubicación"],"f.baseV":["Florida, USA · from Spain","Florida, EE. UU. · de España"],"f.edu":["Education","Formación"],"f.eduV":["MSc Data Science · BSc Computer Engineering (UPV)","Máster en Ciencia de Datos · Ingeniería Informática (UPV)"],
+ "f.now":["Now","Ahora"],"f.lang":["Languages","Idiomas"],"f.langV":["Spanish (native) · English (B2)","Español (nativo) · Inglés (B2)"],
+ "card.hint":["Click or press Enter to flip","Haz clic o pulsa Enter para girarla"],
+ "stack.h2":["The patch panel of my <em>stack.</em>","El patch panel de mi <em>stack.</em>"],
+ "stack.lead":["Every port is a tool I use in production or in my own projects. Pick one to see where it's wired in.","Cada puerto es una herramienta que uso en producción o en mis proyectos. Elige una para ver dónde está conectada."],
+ "work.h2":["Things I've <em>built.</em>","Lo que he <em>construido.</em>"],
+ "work.lead":["Each project as a case: the problem, what I built and what changed. Sketches are illustrative, with anonymized numbers.","Cada proyecto como un caso: el problema, lo que construí y qué cambió. Los bocetos son ilustrativos, con cifras anonimizadas."],
+ "path.h2":["The path so <em>far.</em>","El camino hasta <em>ahora.</em>"],"path.lead":["Roles and education, most recent first.","Puestos y formación, del más reciente al más antiguo."],
+ "nums.h2":["Proof, in <em>numbers.</em>","Resultados, en <em>cifras.</em>"],
+ "n1":["of manual comparison saved each time a tool runs","de comparación manual ahorradas en cada ejecución"],"n2":["SKUs compared across 7 sales channels","SKUs comparados en 7 canales de venta"],
+ "n3":["direct calls a month tracked in my RingCentral dashboard","llamadas directas al mes registradas en mi dashboard de RingCentral"],"n4":["loan records modeled for credit risk in my MSc thesis","registros de préstamos modelados para riesgo de crédito en mi TFM"],
+ "cv":["Résumé (PDF) ↗","CV (PDF) ↗"],
+ "off.ey":["OFF THE CLOCK","FUERA DEL TRABAJO"],"off.h2":["Off the <em>clock.</em>","Fuera del <em>reloj.</em>"],
+ "off.m":["Miami Marathon","Maratón de Miami"],"off.mp":["17-week plan with two gym days a week. Previous marathon: Elche-Alicante in 3:42.","Plan de 17 semanas con dos días de gimnasio. Maratón anterior: Elche-Alicante en 3:42."],
+ "off.ai":["This portfolio","Este portafolio"],"off.aip":["Designed and shipped in a few hours with AI. The avatar wears clothes from my own digitized wardrobe.","Diseñado y publicado en pocas horas con IA. El avatar lleva ropa de mi propio armario digitalizado."],
+ "c.h2":["Let's wire something <em>together.</em>","Conectemos algo <em>juntos.</em>"],"c.lead":["Open to remote data engineering and BI roles.","Abierto a puestos remotos de ingeniería de datos y BI."],
+ "c.copy":["Copy email","Copiar email"],"foot":["Back to top ↑","Volver arriba ↑"],
+ "used":["Wired into","Conectado en"],"pick":["Select a port to see which projects use it.","Selecciona un puerto para ver qué proyectos lo usan."],"none":["Day-to-day work as a systems engineer at Cableworld (2022–2026) and at Electriduct.","Trabajo diario como ingeniero de sistemas en Cableworld (2022–2026) y en Electriduct."],
+ "P":["Problem","Problema"],"S":["Solution","Solución"],"I":["Impact","Impacto"],"all":["All","Todo"],"code":["View code on GitHub ↗","Ver código en GitHub ↗"],
+ "race":["days to race · Jan 25, 2027","días para la carrera · 25 ene 2027"],"copied":["Copied","Copiado"],"sel":["Selected, press Ctrl+C","Seleccionado, pulsa Ctrl+C"]
+};
+const t=k=>(T[k]||[k,k])[lang==='es'?1:0];
+
+/* ---------- projects ---------- */
+const P=[
+ {id:"price",when:["Electriduct · May 2026","Electriduct · may 2026"],t:["Price Intelligence Report","Price Intelligence Report"],
+  p:["30,000–40,000 SKUs sold across 7 channels (own website, Amazon FBA, Amazon FBM, Walmart, eBay, Grainger and Zoho) drifted to different prices, and checking them by hand took weeks.","Entre 30.000 y 40.000 SKUs vendidos en 7 canales (web propia, Amazon FBA, Amazon FBM, Walmart, eBay, Grainger y Zoho) acababan con precios distintos, y revisarlos a mano llevaba semanas."],
+  s:["A daily pipeline that pulls each channel's prices, normalizes SKUs and publishes a discrepancy report.","Un pipeline diario que extrae los precios de cada canal, normaliza los SKUs y publica un informe de discrepancias."],
+  i:[["An estimated 2–3 weeks of manual comparison saved per run","30K+ SKUs reconciled across 7 channels","Used by the CEO and department heads for pricing decisions"],["Entre 2 y 3 semanas de comparación manual ahorradas por ejecución","Más de 30.000 SKUs conciliados en 7 canales","Lo usan el CEO y los responsables de área para decidir precios"]],
+  tags:["Python","PHP","MySQL","REST APIs","ETL"],sk:"price"},
+ {id:"profit",when:["Electriduct · Jul 2026","Electriduct · jul 2026"],t:["Profit & Break-Even Report","Informe de Rentabilidad y BEP"],
+  p:["Pricing decisions were made without a clear view of cost, fees and margin per product and channel.","Las decisiones de precio se tomaban sin ver claramente coste, comisiones y margen por producto y canal."],
+  s:["A profitability report that calculates the break-even point per SKU and channel, visualized in Power BI.","Un informe de rentabilidad que calcula el punto de equilibrio por SKU y canal, visualizado en Power BI."],
+  i:[["Break-even visible for every product","Feeds the price report with margin limits"],["Punto de equilibrio visible para cada producto","Alimenta el informe de precios con límites de margen"]],
+  tags:["Python","SQL","Power BI","DAX"],sk:"profit"},
+ {id:"stock",when:["Electriduct · Aug–Sep 2026","Electriduct · ago–sep 2026"],t:["Stock & Warehouse Reconciliation","Conciliación de Stock y Almacenes"],
+  p:["Physical stock, virtual stock and the two warehouses disagreed, causing overselling and recounts.","El stock físico, el virtual y los dos almacenes no coincidían, provocando sobreventa y recuentos."],
+  s:["Two reports: physical vs virtual stock (August) and SKU discrepancies between both warehouses (September).","Dos informes: stock físico vs virtual (agosto) y discrepancias de SKU entre ambos almacenes (septiembre)."],
+  i:[["Discrepancies flagged before they reach customers","Recounts targeted to the locations that need them"],["Discrepancias detectadas antes de llegar al cliente","Recuentos dirigidos solo a las ubicaciones necesarias"]],
+  tags:["PHP","MySQL","JavaScript"],sk:"stock"},
+ {id:"mcp",when:["Electriduct · Sep–Oct 2026","Electriduct · sep–oct 2026"],t:["QoH 3D & MCP Server","QoH 3D y servidor MCP"],
+  p:["Stock levels lived in tables that were hard to read, and nobody could ask questions about them in plain language.","Los niveles de stock vivían en tablas difíciles de leer y nadie podía preguntarles en lenguaje natural."],
+  s:["A 3D view of quantity on hand plus an MCP server over the QoH tool, so an AI assistant can query stock (demo with anonymized data).","Una vista 3D del stock disponible y un servidor MCP sobre la herramienta QoH para que un asistente de IA consulte el stock (demo con datos anonimizados)."],
+  i:[["Ask “which SKUs are below safety stock?” and get an answer","Warehouse layout readable at a glance"],["Pregunta “¿qué SKUs están bajo el stock de seguridad?” y obtén respuesta","Distribución del almacén legible de un vistazo"]],
+  tags:["MCP","JavaScript","Python","LLMs"],sk:"mcp"},
+ {id:"ring",when:["Electriduct · Apr 2026","Electriduct · abr 2026"],t:["RingCentral Call Dashboard","Dashboard de llamadas RingCentral"],
+  p:["The call dashboard showed zeros. The Analytics API doesn't work on developer accounts, and times were off by the New York → UTC shift.","El dashboard de llamadas mostraba ceros. La Analytics API no funciona en cuentas de desarrollador y las horas estaban desfasadas por el paso de Nueva York a UTC."],
+  s:["Migrated to the Call Log API and rebuilt timezone handling end to end.","Migración a la Call Log API y reconstrucción completa del manejo de zonas horarias."],
+  i:[["967 direct calls tracked in the last 30 days, 3:00 average duration","210 missed calls surfaced so the team can follow up","Root cause documented for future integrations"],["967 llamadas directas registradas en 30 días, con duración media de 3:00","210 llamadas perdidas visibles para poder devolverlas","Causa raíz documentada para futuras integraciones"]],
+  tags:["PHP","JavaScript","REST APIs"],sk:"ring"},
+ {id:"isp",when:["Cableworld · 2022–2026","Cableworld · 2022–2026"],t:["Triple-Play ISP Infrastructure","Infraestructura de operador triple play"],
+  p:["A regional operator delivering internet, phone and TV to homes needs its servers and network up around the clock, and new towns brought online without disruption.","Un operador regional que da internet, telefonía y televisión a hogares necesita servidores y red operativos 24/7, y abrir nuevas poblaciones sin cortes."],
+  s:["Ran the Linux and Windows servers behind every service (DHCP, DNS, Asterisk VoIP, Postfix mail), the core network on Juniper, MikroTik and Huawei OLTs, and Level 3 support for broadband, VoIP, IPTV and WiMAX.","Administré los servidores Linux y Windows de todos los servicios (DHCP, DNS, VoIP con Asterisk, correo Postfix), la red troncal con Juniper, MikroTik y OLTs Huawei, y el soporte de nivel 3 de banda ancha, VoIP, IPTV y WiMAX."],
+  i:[["Brought service to new towns, from server setup to network rollout","Built documentation servers and in-house tools for traffic monitoring and ticketing","Four years running production infrastructure for home customers"],["Apertura de nuevas poblaciones, desde los servidores hasta el despliegue de red","Servidores de documentación y herramientas propias de monitorización de tráfico y ticketing","Cuatro años manteniendo infraestructura en producción para clientes residenciales"]],
+  tags:["Linux","Windows Server","Asterisk","Postfix","Juniper","MikroTik","Huawei OLT"],sk:"isp"},
+ {id:"tfm",when:["MSc thesis · Technical lead · 2025","TFM · Líder técnico · 2025"],t:["Credit Risk Prediction Model","Modelo de Predicción de Riesgo de Crédito"],
+  p:["Estimate the probability of default on Lending Club loans: 1.5M+ records, 145 variables and a default rate of about 1%.","Estimar la probabilidad de impago en préstamos de Lending Club: más de 1,5 M de registros, 145 variables y una tasa de impago de ~1%."],
+  s:["Handled the class imbalance with class weighting, compared Random Forest and XGBoost, and deployed XGBoost in a Gradio app with SHAP explanations per prediction.","Traté el desbalanceo con pesos de clase, comparé Random Forest y XGBoost, y desplegué XGBoost en una app Gradio con explicaciones SHAP por predicción."],
+  i:[["Caught target leakage that inflated the first model to a near-perfect AUC, and rebuilt it with application-time data only (realistic AUC 0.65)","Each prediction returns a default probability and a 10-decile risk tier mapped to credit policy"],["Detecté fuga de información que inflaba el primer modelo a un AUC casi perfecto y lo reconstruí solo con datos del momento de la solicitud (AUC realista 0,65)","Cada predicción devuelve probabilidad de impago y un tramo de riesgo en 10 deciles ligado a la política de crédito"]],
+  tags:["Python","scikit-learn","XGBoost","SHAP","Gradio"],sk:"tfm",code:"https://github.com/AdelardoLopez/TFM"}
+];
+const SK={
+ price:()=>`<span class="ttl"><span>sku / price-diff</span><span>today</span></span>
+  <div class="bar"><i style="width:80%"></i>Web</div><div class="bar"><i style="width:80%"></i>Amazon FBA</div><div class="bar"><i style="width:80%"></i>Amazon FBM</div>
+  <div class="bar alt"><i style="width:64%"></i>Walmart ⚠</div><div class="bar"><i style="width:80%"></i>eBay</div>
+  <div class="bar"><i style="width:80%"></i>Grainger</div><div class="bar"><i style="width:80%"></i>Zoho</div>
+  <span class="flag">illustrative · one SKU out of range</span>`,
+ profit:()=>`<span class="ttl"><span>profit / bep</span><span>SKU-1042</span></span>
+  <svg viewBox="0 0 220 110" width="100%" aria-hidden="true"><line x1="8" y1="100" x2="212" y2="100" stroke="var(--line)"/>
+  <line x1="8" y1="78" x2="212" y2="40" stroke="var(--muted)" stroke-dasharray="4 4"/><line x1="8" y1="100" x2="212" y2="12" stroke="var(--copper)" stroke-width="2.5"/>
+  <circle cx="112" cy="58" r="5" fill="var(--copper)"/><text x="120" y="74" fill="var(--ink)" font-family="IBM Plex Mono,monospace" font-size="10">BEP · 214 u</text></svg>`,
+ stock:()=>`<span class="ttl"><span>qoh / warehouses</span><span>A ↔ B</span></span>
+  <div class="grid3"><div>A-01<br>120</div><div class="bad">A-02<br>−4</div><div>A-03<br>58</div><div>B-01<br>33</div><div>B-02<br>210</div><div class="bad">B-03<br>Δ12</div></div>
+  <span class="flag">2 locations need a recount</span>`,
+ mcp:()=>`<span class="ttl"><span>mcp / qoh-server</span><span class="ok">● live</span></span>
+  <div class="term"><span class="p">›</span> which SKUs are below safety stock?
+<span class="ok">tool</span> qoh.query(min&lt;safety)
+3 SKUs · 2 in warehouse B</div>`,
+ ring:()=>`<span class="ttl"><span>direct calls</span><span>30 days</span></span><span class="big">967</span><span>avg 3m 00s</span>
+  <div class="bar"><i style="width:78%"></i>answered 757</div><div class="bar alt"><i style="width:22%"></i>missed 210</div>
+  <span class="flag">7 days: 201 calls · avg 2m 13s · 47 missed</span>`,
+ isp:()=>`<span class="ttl"><span>noc / services</span><span class="ok">● all up</span></span>
+  <div class="grid3"><div>Internet</div><div>VoIP</div><div>IPTV</div><div>DHCP</div><div>DNS</div><div>Mail</div></div>
+  <div class="term"><span class="p">›</span> rollout new-town
+<span class="ok">ok</span> OLT · DHCP · VoIP provisioned</div>`,
+ tfm:()=>`<span class="ttl"><span>gradio / predict</span><span>XGBoost</span></span>
+  <span class="big">7.8%</span><span>P(default) · tier 9 / 10</span>
+  <div class="bar"><i style="width:72%"></i>dti ↑</div><div class="bar"><i style="width:55%"></i>int_rate ↑</div><div class="bar alt"><i style="width:38%"></i>income ↓</div>
+  <span class="flag">SHAP contributions · illustrative</span>`,
+};
+
+/* ---------- stack ---------- */
+const STACK=[
+ ["Py","Python","Languages",["price","profit","mcp","tfm"]],["Sq","SQL","Languages",["price","profit","stock"]],["Ph","PHP","Languages",["price","stock","ring"]],["Js","JavaScript","Languages",["stock","ring","mcp"]],["Ps","PowerShell","Languages",[]],["Sh","Bash","Languages",["isp"]],
+ ["Pb","Power BI","BI",["profit"]],["Dx","DAX","BI",["profit"]],["Xl","Excel","BI",["price"]],
+ ["Pd","pandas","AI / DS",["tfm","price"]],["Np","NumPy","AI / DS",["tfm"]],["Sk","scikit-learn","AI / DS",["tfm"]],["Xg","XGBoost","AI / DS",["tfm"]],["Sp","SHAP","AI / DS",["tfm"]],["Gr","Gradio","AI / DS",["tfm"]],["Ll","LLMs","AI / DS",["mcp"]],["Mc","MCP","AI / DS",["mcp"]],["Cc","Claude Code","AI / DS",["mcp"]],
+ ["My","MySQL","Data & Web",["price","profit","stock"]],["Et","ETL","Data & Web",["price","stock"]],["Ap","REST APIs","Data & Web",["price","ring"]],["S4","Shift4Shop","Data & Web",["price"]],["Ht","HTML/CSS","Data & Web",["ring","stock"]],
+ ["Lx","Linux Server","Infra",["isp"]],["Ws","Windows Server","Infra",["isp"]],["Ad","Active Directory","Infra",[]],["Dn","DNS / DHCP","Infra",["isp"]],["As","Asterisk VoIP","Infra",["isp"]],["Pf","Postfix","Infra",["isp"]],["Ga","GitHub Actions","Infra",[]],
+ ["Jn","Juniper","Network",["isp"]],["Mk","MikroTik","Network",["isp"]],["Hw","Huawei OLT","Network",["isp"]],
+ ["Gt","Git","Practices",["tfm"]],["Fz","IT Forensics","Practices",[]]
+];
+let fam="All", selPort=-1;
+function renderStack(){
+  const fams=["All",...new Set(STACK.map(s=>s[2]))];
+  $('#filters').innerHTML=fams.map(f=>`<button class="chip" type="button" aria-pressed="${f===fam}" data-f="${f}">${f==='All'?t('all'):f} ${f==='All'?STACK.length:STACK.filter(s=>s[2]===f).length}</button>`).join('');
+  $('#panel').innerHTML=STACK.map((s,i)=>{const on=fam==='All'||s[2]===fam;
+    return `<button class="port ${on?'':'off'} ${i===selPort?'sel':''} ${s[3].length?'used':''}" type="button" data-i="${i}" aria-pressed="${i===selPort}"><span class="led"></span><span class="fam">${String(i+1).padStart(2,'0')}</span><span class="sym">${s[0]}</span><span class="nm">${s[1]}</span><span class="fam">${s[2]}</span></button>`}).join('');
+  const ro=$('#readout');
+  if(selPort<0){ro.innerHTML=`<span style="color:var(--muted)">${t('pick')}</span>`;return}
+  const s=STACK[selPort];
+  ro.innerHTML=`<b>${s[1]}</b><span style="color:var(--muted)">→ ${s[3].length?t('used'):''}</span>`+
+    (s[3].length?s[3].map(id=>`<button class="link" type="button" data-go="${id}">${P.find(p=>p.id===id).t[lang==='es'?1:0]}</button>`).join('<span style="color:var(--muted)">·</span>'):`<span style="color:var(--muted)">${t('none')}</span>`);
+}
+$('#filters').addEventListener('click',e=>{const b=e.target.closest('.chip');if(!b)return;fam=b.dataset.f;renderStack()});
+$('#panel').addEventListener('click',e=>{const b=e.target.closest('.port');if(!b)return;const i=+b.dataset.i;selPort=selPort===i?-1:i;renderStack()});
+
+/* ---------- cases ---------- */
+let cur=0;
+function renderCases(){
+  const L=lang==='es'?1:0;
+  $('#caseList').innerHTML=P.map((p,i)=>`<button class="case-btn" role="tab" id="tab-${p.id}" aria-selected="${i===cur}" aria-controls="case" tabindex="${i===cur?0:-1}" data-i="${i}"><span class="n">${String(i+1).padStart(2,'0')}</span><span class="t">${p.t[L]}</span><span class="m">${p.when[L]}</span></button>`).join('');
+  const p=P[cur];
+  $('#case').setAttribute('aria-labelledby','tab-'+p.id);
+  $('#case').innerHTML=`<div><div class="meta mono">${p.when[L]}</div><h3>${p.t[L]}</h3>
+    <dl class="psi"><div><dt>${t('P')}</dt><dd>${p.p[L]}</dd></div><div><dt>${t('S')}</dt><dd>${p.s[L]}</dd></div>
+    <div><dt>${t('I')}</dt><dd><ul>${p.i[L].map(x=>`<li>${x}</li>`).join('')}</ul></dd></div></dl>
+    <div class="tags">${p.tags.map(x=>`<span>${x}</span>`).join('')}</div>
+    ${p.code?`<a class="more" href="${p.code}" target="_blank" rel="noopener">${t('code')}</a>`:''}</div>
+    <div class="sketch" aria-hidden="true">${SK[p.sk]()}</div>`;
+}
+function openCase(id){const i=P.findIndex(p=>p.id===id);if(i<0)return;cur=i;renderCases();$('#work').scrollIntoView({behavior:reduce?'auto':'smooth'});}
+$('#caseList').addEventListener('click',e=>{const b=e.target.closest('.case-btn');if(!b)return;cur=+b.dataset.i;renderCases();$('#tab-'+P[cur].id).focus()});
+$('#caseList').addEventListener('keydown',e=>{if(!['ArrowDown','ArrowUp','ArrowLeft','ArrowRight'].includes(e.key))return;e.preventDefault();
+  cur=(cur+(e.key==='ArrowDown'||e.key==='ArrowRight'?1:-1)+P.length)%P.length;renderCases();$('#tab-'+P[cur].id).focus()});
+document.addEventListener('click',e=>{const g=e.target.closest('[data-go]');if(g)openCase(g.dataset.go)});
+
+/* ---------- timeline ---------- */
+const TL=[
+ ["2018",["Education","Formación"],["BSc Computer Engineering, Information Systems","Grado en Ingeniería Informática, Sistemas de Información"],["Universitat Politècnica de València · 2018–2022","Universitat Politècnica de València · 2018–2022"],null],
+ ["2021",["Internship","Prácticas"],["IT Intern, Systems Department","Becario de IT, Departamento de Sistemas"],["BMW Benigar · Spain · Jul – Aug 2021","BMW Benigar · España · jul – ago 2021"],["Active Directory, GPOs and user permissions; support for system migrations.","Active Directory, GPOs y permisos de usuario; apoyo en migraciones de sistemas."]],
+ ["2022",["Experience","Experiencia"],["Systems Engineer","Ingeniero de Sistemas"],["Cableworld · Spain · May 2022 – Mar 2026","Cableworld · España · may 2022 – mar 2026"],["Triple-play operator (internet, phone and TV for homes). Brought service to new towns and built documentation servers. Ran enterprise Linux and Windows servers, DHCP, DNS, Asterisk VoIP and Postfix mail, and the core network (Juniper, MikroTik, Huawei OLTs). Level 3 support for broadband, VoIP, IPTV and WiMAX, and custom tools for traffic monitoring, ticketing and documentation.","Operador triple play (internet, telefonía y TV para hogares). Abrí nuevas poblaciones y monté servidores de documentación. Administré servidores Linux y Windows, DHCP, DNS, VoIP con Asterisk y correo Postfix, y la red troncal (Juniper, MikroTik, OLTs Huawei). Soporte de nivel 3 en banda ancha, VoIP, IPTV y WiMAX, y herramientas propias de monitorización de tráfico, ticketing y documentación."]],
+ ["2024",["Expert witness","Perito"],["Court-Appointed IT Expert Witness","Perito Judicial Informático"],["CNIPJ, Spain · May 2024 – Present","CNIPJ, España · may 2024 – actualidad"],["Technical expert opinions in judicial proceedings involving IT systems and data.","Dictámenes técnicos en procedimientos judiciales sobre sistemas informáticos y datos."]],
+ ["2024",["Education","Formación"],["MSc Data Science","Máster en Ciencia de Datos"],["KSchool / UNIR · 2024–2025","KSchool / UNIR · 2024–2025"],null],
+ ["2026",["Experience","Experiencia"],["Software Developer","Software Developer"],["Electriduct · Pompano Beach, FL · Apr 2026 – Present","Electriduct · Pompano Beach, FL · abr 2026 – actualidad"],["Four internal data tools, the RingCentral integration, company Power BI reporting, and the Shift4Shop storefront and PHP app server.","Cuatro herramientas internas de datos, la integración con RingCentral, el reporting de Power BI de la empresa, y la tienda Shift4Shop y el servidor de aplicaciones PHP."],1],
+ ["Next",["Open to work","Disponible"],["Your remote data team?","¿Tu equipo de datos remoto?"],[`<a href="#contact">Let's talk ↓</a>`,`<a href="#contact">Hablemos ↓</a>`],null]
+];
+function renderTL(){const L=lang==='es'?1:0;
+  $('#tl').innerHTML=TL.slice().reverse().map(r=>`<li class="${r[5]?'now':''}"><span class="yr">${r[0]==='Next'&&L?'Sig.':r[0]}</span><div><span class="kind">${r[1][L]}</span><h3>${r[2][L]}</h3><div class="where">${r[3][L]}</div>${r[4]?`<p>${r[4][L]}</p>`:''}</div></li>`).join('');}
+
+/* ---------- avatar ---------- */
+const ASK=[
+ {q:["Who are you?","¿Quién eres?"],a:["I'm Adelardo, a computer engineer with an MSc in Data Science. I build the internal data tools a US company runs on every day.","Soy Adelardo, ingeniero informático con un máster en Ciencia de Datos. Construyo las herramientas de datos que una empresa de EE. UU. usa cada día."]},
+ {q:["What do you build?","¿Qué construyes?"],a:["Pipelines and reports: price intelligence for 30K+ SKUs across 7 sales channels, profit and break-even, stock reconciliation, and an MCP server so AI can query stock.","Pipelines e informes: inteligencia de precios de más de 30.000 SKUs en 7 canales, rentabilidad y punto de equilibrio, conciliación de stock y un servidor MCP para que la IA consulte el stock."],go:"price"},
+ {q:["Why hire you?","¿Por qué tú?"],a:["I ship. Four internal tools in my first six months, each saving weeks of manual work. The cases are just below.","Porque entrego. Cuatro herramientas internas en mis primeros seis meses, cada una ahorrando semanas de trabajo manual. Los casos están justo debajo."]},
+ {q:["What's next?","¿Qué buscas?"],a:["A remote data engineering or BI role. Let's talk at the bottom of the page.","Un puesto remoto de ingeniería de datos o BI. Hablemos al final de la página."]}
+];
+let askI=-1, typer=null, talkUntil=0;
+const say=$('#say');
+function speak(i){
+  askI=i;const L=lang==='es'?1:0;const txt=ASK[i].a[L];
+  $$('.ask').forEach((b,j)=>b.setAttribute('aria-pressed',j===i));
+  clearInterval(typer);
+  const vid=$('#heroVideo');if(!vid.hidden){try{vid.currentTime=0;vid.play()}catch(e){}}
+  if(reduce){say.textContent=txt;return}
+  let k=0;say.textContent='';talkUntil=performance.now()+txt.length*24;
+  typer=setInterval(()=>{say.textContent=txt.slice(0,++k);if(k>=txt.length)clearInterval(typer)},24);
+}
+function renderAsks(){const L=lang==='es'?1:0;
+  $('#asks').innerHTML=ASK.map((a,i)=>`<button class="ask" type="button" aria-pressed="${i===askI}" data-a="${i}">${a.q[L]}</button>`).join('');}
+$('#asks').addEventListener('click',e=>{const b=e.target.closest('.ask');if(b)speak(+b.dataset.a)});
+$('#screen').addEventListener('click',()=>speak((askI+1)%ASK.length));
+
+// video: use hero.webm when present
+const vid=$('#heroVideo');
+vid.addEventListener('loadeddata',()=>{vid.hidden=false;$('#avatarCanvas').hidden=true;vid.play().catch(()=>{})});
+vid.load();
+
+// canvas placeholder: monogram + voice rings
+const cv=$('#avatarCanvas'),ctx=cv.getContext('2d');
+const tok=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const photo=new Image();photo.onload=()=>{if(reduce)requestAnimationFrame(draw)};photo.src='photo.jpg';
+function draw(now){
+  const w=cv.width,h=cv.height,cx=w/2,cy=h*.42;ctx.clearRect(0,0,w,h);
+  const ink=tok('--ink'),cop=tok('--copper'),sur=tok('--surface'),mut=tok('--muted');
+  const talking=now<talkUntil;
+  // cables
+  ctx.lineWidth=2.5;ctx.strokeStyle=cop;
+  for(let k=0;k<3;k++){ctx.globalAlpha=.18+k*.08;ctx.beginPath();for(let x=0;x<=w;x+=5){const y=h*.86+k*12+Math.sin(x/40+now/1100+k*1.3)*7;x?ctx.lineTo(x,y):ctx.moveTo(x,y)}ctx.stroke()}
+  ctx.globalAlpha=1;
+  // rings
+  for(let r=0;r<3;r++){const ph=((now/1600)+r/3)%1;ctx.globalAlpha=(talking?.55:.25)*(1-ph);ctx.strokeStyle=cop;ctx.lineWidth=2;
+    ctx.beginPath();ctx.arc(cx,cy,100+ph*60,0,Math.PI*2);ctx.stroke()}
+  ctx.globalAlpha=1;
+  // disc with photo
+  const R=96;ctx.fillStyle=sur;ctx.beginPath();ctx.arc(cx,cy,R,0,Math.PI*2);ctx.fill();
+  if(photo.complete&&photo.naturalWidth){ctx.save();ctx.beginPath();ctx.arc(cx,cy,R,0,Math.PI*2);ctx.clip();ctx.drawImage(photo,cx-R*1.25,cy-R*1.0,R*2.5,R*2.5);ctx.restore()}
+  else{ctx.fillStyle=ink;ctx.font='700 64px "Familjen Grotesk", system-ui, sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('AL',cx,cy+3)}
+  ctx.strokeStyle=talking?cop:ink;ctx.lineWidth=3;ctx.beginPath();ctx.arc(cx,cy,R,0,Math.PI*2);ctx.stroke();
+  // waveform
+  const bars=21,bw=6,gap=5,tw=bars*(bw+gap)-gap,x0=cx-tw/2,by=h*.72;
+  for(let i=0;i<bars;i++){const env=Math.sin(Math.PI*(i+.5)/bars);
+    const amp=talking?(6+Math.abs(Math.sin(now/90+i*1.7))*26*env):(3+Math.sin(now/600+i*.6)*1.5);
+    ctx.fillStyle=talking?cop:mut;ctx.globalAlpha=talking?1:.5;ctx.fillRect(x0+i*(bw+gap),by-amp,bw,amp*2)}
+  ctx.globalAlpha=1;
+  if(!reduce)requestAnimationFrame(draw);
+}
+requestAnimationFrame(draw);
+
+/* ---------- card, copy, theme, lang, nav ---------- */
+const card=$('#card');const flip=()=>card.classList.toggle('flip');
+card.addEventListener('click',flip);card.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();flip()}});
+
+$('#copyBtn').addEventListener('click',async e=>{const b=e.currentTarget,m=$('#mail');
+  try{await navigator.clipboard.writeText(m.textContent);b.textContent=t('copied')}
+  catch(_){const r=document.createRange();r.selectNodeContents(m);const s=getSelection();s.removeAllRanges();s.addRange(r);b.textContent=t('sel')}
+  setTimeout(()=>b.textContent=t('c.copy'),2200)});
+
+const root=document.documentElement;
+const savedTheme=store.get('theme');if(savedTheme)root.dataset.theme=savedTheme;
+$('#themeBtn').addEventListener('click',()=>{const dark=root.dataset.theme?root.dataset.theme==='dark':matchMedia('(prefers-color-scheme: dark)').matches;
+  root.dataset.theme=dark?'light':'dark';store.set('theme',root.dataset.theme);if(reduce)requestAnimationFrame(draw)});
+
+function race(){const end=new Date('2027-01-25T06:00:00-05:00'),start=new Date('2026-10-05T00:00:00-04:00'),now=new Date();
+  const d=Math.max(0,Math.ceil((end-now)/864e5));$('#race').textContent=`${d} ${t('race')}`;
+  $('#raceBar').style.width=Math.min(100,Math.max(0,(now-start)/(end-start)*100)).toFixed(1)+'%';}
+
+function applyLang(){
+  root.lang=lang;$('#lang-en').setAttribute('aria-pressed',lang==='en');$('#lang-es').setAttribute('aria-pressed',lang==='es');
+  $$('[data-i18n]').forEach(el=>{el.innerHTML=t(el.dataset.i18n)});
+  renderStack();renderCases();renderTL();renderAsks();race();
+  say.textContent=askI<0?(lang==='es'?'Hola 👋 Pulsa una pregunta o tócame para empezar.':'Hi 👋 Tap a question or tap me to start.'):ASK[askI].a[lang==='es'?1:0];
+}
+$('#lang-en').addEventListener('click',()=>{lang='en';store.set('lang',lang);applyLang()});
+$('#lang-es').addEventListener('click',()=>{lang='es';store.set('lang',lang);applyLang()});
+applyLang();
+
+// active nav + progress
+const links=$$('#navlinks a');
+const io=new IntersectionObserver(es=>es.forEach(en=>{if(en.isIntersecting){links.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+en.target.id))}}),{rootMargin:'-45% 0px -50% 0px'});
+$$('main section[id]').forEach(s=>io.observe(s));
+addEventListener('scroll',()=>{const m=document.documentElement.scrollHeight-innerHeight;$('#progress').style.width=(m>0?scrollY/m*100:0)+'%'},{passive:true});
+})();
+</script>
+
+</body>
+</html>
