@@ -90,6 +90,7 @@ h2 em,h1 em{font-style:normal;color:var(--copper)}
   background:radial-gradient(120% 80% at 50% 25%,var(--copper-soft),var(--surface) 70%);border:1px solid var(--line);box-shadow:0 20px 50px rgb(0 0 0/.10)}
 .screen:focus-visible{outline:2px solid var(--copper);outline-offset:4px}
 .screen canvas,.screen video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.screen video{object-position:50% 12%}
 .rec{position:absolute;left:12px;top:12px;display:flex;align-items:center;gap:6px;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:3px 8px;color:var(--muted)}
 .rec i{width:7px;height:7px;border-radius:50%;background:var(--copper)}
 .bubble{margin-top:-46px;position:relative;z-index:2;margin-left:14px;margin-right:14px;background:var(--ink);color:var(--bg);padding:12px 14px;border-radius:12px;font-size:.93rem;line-height:1.45;min-height:3.2em;
@@ -280,8 +281,8 @@ footer{padding-block:28px;color:var(--muted);display:flex;justify-content:space-
   <div class="stage">
     <button class="screen" id="screen" type="button" aria-label="Talk to Adelardo's avatar">
       <canvas id="avatarCanvas" width="360" height="450" aria-hidden="true"></canvas>
-      <!-- Drop hero.webm (Google Flow) next to this page and it replaces the canvas automatically -->
-      <video id="heroVideo" muted loop playsinline preload="auto" hidden><source src="hero.webm" type="video/webm"></video>
+      <!-- hero.mp4 (Google Flow) replaces the canvas once it loads -->
+      <video id="heroVideo" muted playsinline preload="auto" poster="hero.jpg" hidden><source src="hero.mp4" type="video/mp4"></video>
       <span class="rec mono"><i></i><span data-i18n="hero.live">Live intro</span></span>
     </button>
     <div class="bubble" role="status" aria-live="polite"><span class="who mono">ADELARDO</span><span id="say"></span><span class="caret"></span></div>
@@ -605,7 +606,7 @@ function speak(i){
   askI=i;const L=lang==='es'?1:0;const txt=ASK[i].a[L];
   $$('.ask').forEach((b,j)=>b.setAttribute('aria-pressed',j===i));
   clearInterval(typer);
-  const vid=$('#heroVideo');if(!vid.hidden){try{vid.currentTime=0;vid.play()}catch(e){}}
+  const vid=$('#heroVideo');if(!vid.hidden){try{vid.currentTime=0;vid.play().catch(()=>{})}catch(e){}}
   if(reduce){say.textContent=txt;return}
   let k=0;say.textContent='';talkUntil=performance.now()+txt.length*24;
   typer=setInterval(()=>{say.textContent=txt.slice(0,++k);if(k>=txt.length)clearInterval(typer)},24);
@@ -617,7 +618,7 @@ $('#screen').addEventListener('click',()=>speak((askI+1)%ASK.length));
 
 // video: use hero.webm when present
 const vid=$('#heroVideo');
-vid.addEventListener('loadeddata',()=>{vid.hidden=false;$('#avatarCanvas').hidden=true;vid.play().catch(()=>{})});
+vid.addEventListener('loadeddata',()=>{vid.hidden=false;$('#avatarCanvas').hidden=true;if(!reduce)vid.play().catch(()=>{})});
 vid.load();
 
 // canvas placeholder: monogram + voice rings
