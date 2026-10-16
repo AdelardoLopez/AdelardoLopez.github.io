@@ -180,6 +180,8 @@ h2 em,h1 em{font-style:normal;color:var(--copper)}
 .case{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:26px;display:grid;grid-template-columns:1fr 250px;gap:26px;min-width:0}
 @media(max-width:700px){.case{grid-template-columns:1fr;padding:20px}}
 .case > div{min-width:0}
+.case.has-media{grid-template-columns:1fr}
+.media video{display:block;width:100%;height:auto;aspect-ratio:1280/654;max-width:100%;border-radius:10px;border:1px solid var(--line);background:#0f1417}
 .case .meta{color:var(--muted)}
 .case h3{font-size:clamp(1.5rem,3vw,2rem);margin:6px 0 18px}
 .psi{display:grid;gap:14px}
@@ -375,7 +377,7 @@ footer{padding-block:28px;color:var(--muted);display:flex;justify-content:space-
 <section id="work">
   <div class="eyebrow mono">RUN 03 · <span data-i18n="nav.work">WORK</span></div>
   <h2 data-i18n="work.h2">Things I've <em>built.</em></h2>
-  <p class="lead" data-i18n="work.lead">Each project as a case: the problem, what I built and what changed. Sketches are illustrative, with anonymized numbers.</p>
+  <p class="lead" data-i18n="work.lead">Each project as a case: the problem, what I built and what changed.</p>
   <div class="cases">
     <div class="case-list" id="caseList" role="tablist" aria-label="Projects"></div>
     <article class="case" id="case" role="tabpanel"></article>
@@ -450,7 +452,7 @@ const T={
  "stack.h2":["The patch panel of my <em>stack.</em>","El patch panel de mi <em>stack.</em>"],
  "stack.lead":["Every port is a tool I use in production or in my own projects. Pick one to see where it's wired in.","Cada puerto es una herramienta que uso en producción o en mis proyectos. Elige una para ver dónde está conectada."],
  "work.h2":["Things I've <em>built.</em>","Lo que he <em>construido.</em>"],
- "work.lead":["Each project as a case: the problem, what I built and what changed. Sketches are illustrative, with anonymized numbers.","Cada proyecto como un caso: el problema, lo que construí y qué cambió. Los bocetos son ilustrativos, con cifras anonimizadas."],
+ "work.lead":["Each project as a case: the problem, what I built and what changed.","Cada proyecto como un caso: el problema, lo que construí y qué cambió."],
  "path.h2":["The path so <em>far.</em>","El camino hasta <em>ahora.</em>"],"path.lead":["Roles and education, most recent first.","Puestos y formación, del más reciente al más antiguo."],
  "nums.h2":["Proof, in <em>numbers.</em>","Resultados, en <em>cifras.</em>"],
  "n1":["of manual comparison saved each time a tool runs","de comparación manual ahorradas en cada ejecución"],"n2":["SKUs compared across 7 sales channels","SKUs comparados en 7 canales de venta"],
@@ -469,6 +471,11 @@ const t=k=>(T[k]||[k,k])[lang==='es'?1:0];
 
 /* ---------- projects ---------- */
 const P=[
+ {id:"mcp",when:["Electriduct · Sep–Oct 2026","Electriduct · sep–oct 2026"],t:["QoH 3D & MCP Server","QoH 3D y servidor MCP"],
+  p:["Stock levels lived in tables that were hard to read, and nobody could ask questions about them in plain language.","Los niveles de stock vivían en tablas difíciles de leer y nadie podía preguntarles en lenguaje natural."],
+  s:["A 3D view of quantity on hand plus an MCP server over the QoH tool, so an AI assistant can query stock in plain language. Each column is a SKU: height is quantity on hand and color shows its position against the reorder point.","Una vista 3D del stock disponible y un servidor MCP sobre la herramienta QoH para que un asistente de IA consulte el stock en lenguaje natural. Cada columna es un SKU: la altura es el stock disponible y el color indica su posición frente al punto de pedido."],
+  i:[["Ask “which SKUs are below safety stock?” and get an answer","Warehouse layout readable at a glance"],["Pregunta “¿qué SKUs están bajo el stock de seguridad?” y obtén respuesta","Distribución del almacén legible de un vistazo"]],
+  tags:["MCP","JavaScript","Python","LLMs"],sk:"mcp",vid:"qoh3d.mp4",poster:"qoh3d.jpg"},
  {id:"price",when:["Electriduct · May 2026","Electriduct · may 2026"],t:["Price Intelligence Report","Price Intelligence Report"],
   p:["30,000–40,000 SKUs sold across 7 channels (own website, Amazon FBA, Amazon FBM, Walmart, eBay, Grainger and Zoho) drifted to different prices, and checking them by hand took weeks.","Entre 30.000 y 40.000 SKUs vendidos en 7 canales (web propia, Amazon FBA, Amazon FBM, Walmart, eBay, Grainger y Zoho) acababan con precios distintos, y revisarlos a mano llevaba semanas."],
   s:["A daily pipeline that pulls each channel's prices, normalizes SKUs and publishes a discrepancy report.","Un pipeline diario que extrae los precios de cada canal, normaliza los SKUs y publica un informe de discrepancias."],
@@ -484,11 +491,6 @@ const P=[
   s:["Two reports: physical vs virtual stock (August) and SKU discrepancies between both warehouses (September).","Dos informes: stock físico vs virtual (agosto) y discrepancias de SKU entre ambos almacenes (septiembre)."],
   i:[["Discrepancies flagged before they reach customers","Recounts targeted to the locations that need them"],["Discrepancias detectadas antes de llegar al cliente","Recuentos dirigidos solo a las ubicaciones necesarias"]],
   tags:["PHP","MySQL","JavaScript"],sk:"stock"},
- {id:"mcp",when:["Electriduct · Sep–Oct 2026","Electriduct · sep–oct 2026"],t:["QoH 3D & MCP Server","QoH 3D y servidor MCP"],
-  p:["Stock levels lived in tables that were hard to read, and nobody could ask questions about them in plain language.","Los niveles de stock vivían en tablas difíciles de leer y nadie podía preguntarles en lenguaje natural."],
-  s:["A 3D view of quantity on hand plus an MCP server over the QoH tool, so an AI assistant can query stock (demo with anonymized data).","Una vista 3D del stock disponible y un servidor MCP sobre la herramienta QoH para que un asistente de IA consulte el stock (demo con datos anonimizados)."],
-  i:[["Ask “which SKUs are below safety stock?” and get an answer","Warehouse layout readable at a glance"],["Pregunta “¿qué SKUs están bajo el stock de seguridad?” y obtén respuesta","Distribución del almacén legible de un vistazo"]],
-  tags:["MCP","JavaScript","Python","LLMs"],sk:"mcp"},
  {id:"ring",when:["Electriduct · Apr 2026","Electriduct · abr 2026"],t:["RingCentral Call Dashboard","Dashboard de llamadas RingCentral"],
   p:["The call dashboard showed zeros. The Analytics API doesn't work on developer accounts, and times were off by the New York → UTC shift.","El dashboard de llamadas mostraba ceros. La Analytics API no funciona en cuentas de desarrollador y las horas estaban desfasadas por el paso de Nueva York a UTC."],
   s:["Migrated to the Call Log API and rebuilt timezone handling end to end.","Migración a la Call Log API y reconstrucción completa del manejo de zonas horarias."],
@@ -510,18 +512,18 @@ const SK={
   <div class="bar"><i style="width:80%"></i>Web</div><div class="bar"><i style="width:80%"></i>Amazon FBA</div><div class="bar"><i style="width:80%"></i>Amazon FBM</div>
   <div class="bar alt"><i style="width:64%"></i>Walmart ⚠</div><div class="bar"><i style="width:80%"></i>eBay</div>
   <div class="bar"><i style="width:80%"></i>Grainger</div><div class="bar"><i style="width:80%"></i>Zoho</div>
-  <span class="flag">illustrative · one SKU out of range</span>`,
+  <span class="flag">price gaps flagged per SKU and channel</span>`,
  profit:()=>`<span class="ttl"><span>profit / bep</span><span>SKU-1042</span></span>
   <svg viewBox="0 0 220 110" width="100%" aria-hidden="true"><line x1="8" y1="100" x2="212" y2="100" stroke="var(--line)"/>
   <line x1="8" y1="78" x2="212" y2="40" stroke="var(--muted)" stroke-dasharray="4 4"/><line x1="8" y1="100" x2="212" y2="12" stroke="var(--copper)" stroke-width="2.5"/>
-  <circle cx="112" cy="58" r="5" fill="var(--copper)"/><text x="120" y="74" fill="var(--ink)" font-family="IBM Plex Mono,monospace" font-size="10">BEP · 214 u</text></svg>`,
+  <circle cx="112" cy="58" r="5" fill="var(--copper)"/><text x="120" y="74" fill="var(--ink)" font-family="IBM Plex Mono,monospace" font-size="10">BEP</text></svg>`,
  stock:()=>`<span class="ttl"><span>qoh / warehouses</span><span>A ↔ B</span></span>
-  <div class="grid3"><div>A-01<br>120</div><div class="bad">A-02<br>−4</div><div>A-03<br>58</div><div>B-01<br>33</div><div>B-02<br>210</div><div class="bad">B-03<br>Δ12</div></div>
-  <span class="flag">2 locations need a recount</span>`,
+  <div class="grid3"><div>A-01<br>OK</div><div class="bad">A-02<br>Δ</div><div>A-03<br>OK</div><div>B-01<br>OK</div><div>B-02<br>OK</div><div class="bad">B-03<br>Δ</div></div>
+  <span class="flag">physical vs virtual · warehouse A vs B</span>`,
  mcp:()=>`<span class="ttl"><span>mcp / qoh-server</span><span class="ok">● live</span></span>
   <div class="term"><span class="p">›</span> which SKUs are below safety stock?
 <span class="ok">tool</span> qoh.query(min&lt;safety)
-3 SKUs · 2 in warehouse B</div>`,
+SKU list with locations</div>`,
  ring:()=>`<span class="ttl"><span>direct calls</span><span>30 days</span></span><span class="big">967</span><span>avg 3m 00s</span>
   <div class="bar"><i style="width:78%"></i>answered 757</div><div class="bar alt"><i style="width:22%"></i>missed 210</div>
   <span class="flag">7 days: 201 calls · avg 2m 13s · 47 missed</span>`,
@@ -530,9 +532,9 @@ const SK={
   <div class="term"><span class="p">›</span> rollout new-town
 <span class="ok">ok</span> OLT · DHCP · VoIP provisioned</div>`,
  tfm:()=>`<span class="ttl"><span>gradio / predict</span><span>XGBoost</span></span>
-  <span class="big">7.8%</span><span>P(default) · tier 9 / 10</span>
+  <span>P(default) + risk tier 1–10</span>
   <div class="bar"><i style="width:72%"></i>dti ↑</div><div class="bar"><i style="width:55%"></i>int_rate ↑</div><div class="bar alt"><i style="width:38%"></i>income ↓</div>
-  <span class="flag">SHAP contributions · illustrative</span>`,
+  <span class="flag">SHAP contribution per prediction</span>`,
 };
 
 /* ---------- stack ---------- */
@@ -572,7 +574,11 @@ function renderCases(){
     <div><dt>${t('I')}</dt><dd><ul>${p.i[L].map(x=>`<li>${x}</li>`).join('')}</ul></dd></div></dl>
     <div class="tags">${p.tags.map(x=>`<span>${x}</span>`).join('')}</div>
     ${p.code?`<a class="more" href="${p.code}" target="_blank" rel="noopener">${t('code')}</a>`:''}</div>
-    <div class="sketch" aria-hidden="true">${SK[p.sk]()}</div>`;
+    ${p.vid?'':`<div class="sketch" aria-hidden="true">${SK[p.sk]()}</div>`}`;
+  $('#case').classList.toggle('has-media',!!p.vid);
+  if(p.vid){const m=document.createElement('div');m.className='media';
+    m.innerHTML=`<video src="${p.vid}" poster="${p.poster}" muted loop playsinline preload="metadata" ${reduce?'':'autoplay'} aria-label="${p.t[L]} screen recording"></video>`;
+    $('#case').prepend(m)}
 }
 function openCase(id){const i=P.findIndex(p=>p.id===id);if(i<0)return;cur=i;renderCases();$('#work').scrollIntoView({behavior:reduce?'auto':'smooth'});}
 $('#caseList').addEventListener('click',e=>{const b=e.target.closest('.case-btn');if(!b)return;cur=+b.dataset.i;renderCases();$('#tab-'+P[cur].id).focus()});
