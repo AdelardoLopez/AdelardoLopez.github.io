@@ -296,7 +296,7 @@ footer{padding-block:28px;color:var(--muted);display:flex;justify-content:space-
   <div class="pipe-box">
     <div class="pipe-head mono"><span data-i18n="pipe.title">HOW MY DATA FLOWS AT ELECTRIDUCT</span><span data-i18n="pipe.hint">Click a node to open the project</span></div>
     <div class="pipe-scroll">
-      <svg viewBox="0 0 960 250" role="img" aria-label="Data pipeline: sales channels, warehouses and phone API feed an ETL layer into MySQL, which powers price, profit, stock and AI reports.">
+      <svg viewBox="0 0 960 250" role="img" aria-label="Data pipeline: sales channels, warehouses and phone API feed C# .NET jobs into SQL Server, which powers price, profit, stock and AI reports.">
         <g id="flows">
           <path class="flow" d="M150 40 C230 40,240 120,320 120"/>
           <path class="flow" d="M150 125 C230 125,240 125,320 125"/>
@@ -310,8 +310,8 @@ footer{padding-block:28px;color:var(--muted);display:flex;justify-content:space-
         <g class="node" data-go="price"><rect x="10" y="18" width="140" height="46" rx="8"/><text x="22" y="38">7 sales channels</text><text class="sub" x="22" y="54">Amazon · Walmart · eBay…</text></g>
         <g class="node" data-go="stock"><rect x="10" y="102" width="140" height="46" rx="8"/><text x="22" y="122">2 warehouses</text><text class="sub" x="22" y="138">QoH · virtual stock</text></g>
         <g class="node" data-go="ring"><rect x="10" y="187" width="140" height="46" rx="8"/><text x="22" y="207">RingCentral API</text><text class="sub" x="22" y="223">call logs</text></g>
-        <g class="node hot"><rect x="320" y="96" width="150" height="58" rx="8"/><text x="334" y="120">ETL layer</text><text class="sub" x="334" y="138">Python · PHP · cron</text></g>
-        <g class="node hot"><rect x="540" y="96" width="140" height="58" rx="8"/><text x="554" y="120">MySQL</text><text class="sub" x="554" y="138">normalized SKUs</text></g>
+        <g class="node hot"><rect x="320" y="96" width="150" height="58" rx="8"/><text x="334" y="120">C# .NET jobs</text><text class="sub" x="334" y="138">T-SQL · Python</text></g>
+        <g class="node hot"><rect x="540" y="96" width="140" height="58" rx="8"/><text x="554" y="120">SQL Server</text><text class="sub" x="554" y="138">ERP + Amazon DBs</text></g>
         <g class="node" data-go="price"><rect x="790" y="10" width="160" height="40" rx="8"/><text x="802" y="35">Price Intelligence</text></g>
         <g class="node" data-go="profit"><rect x="790" y="70" width="160" height="40" rx="8"/><text x="802" y="95">Profit / BEP report</text></g>
         <g class="node" data-go="stock"><rect x="790" y="135" width="160" height="40" rx="8"/><text x="802" y="160">Stock reconciliation</text></g>
@@ -477,20 +477,20 @@ const P=[
   i:[["Ask “which SKUs are below safety stock?” and get an answer","Warehouse layout readable at a glance"],["Pregunta “¿qué SKUs están bajo el stock de seguridad?” y obtén respuesta","Distribución del almacén legible de un vistazo"]],
   tags:["MCP","JavaScript","Python","LLMs"],sk:"mcp",vid:"qoh3d.mp4",poster:"qoh3d.jpg"},
  {id:"price",when:["Electriduct · May 2026","Electriduct · may 2026"],t:["Price Intelligence Report","Price Intelligence Report"],
-  p:["30,000–40,000 SKUs sold across 7 channels (own website, Amazon FBA, Amazon FBM, Walmart, eBay, Grainger and Zoho) drifted to different prices, and checking them by hand took weeks.","Entre 30.000 y 40.000 SKUs vendidos en 7 canales (web propia, Amazon FBA, Amazon FBM, Walmart, eBay, Grainger y Zoho) acababan con precios distintos, y revisarlos a mano llevaba semanas."],
-  s:["A daily pipeline that pulls each channel's prices, normalizes SKUs and publishes a discrepancy report.","Un pipeline diario que extrae los precios de cada canal, normaliza los SKUs y publica un informe de discrepancias."],
+  p:["30,000–40,000 SKUs sold across 7 channels (own website, Amazon FBA, Amazon FBM, Walmart, eBay, Grainger and Zoro) drifted to different prices, and checking them by hand took weeks.","Entre 30.000 y 40.000 SKUs vendidos en 7 canales (web propia, Amazon FBA, Amazon FBM, Walmart, eBay, Grainger y Zoro) acababan con precios distintos, y revisarlos a mano llevaba semanas."],
+  s:["A C# .NET application that queries SQL Server (the ERP database and the Amazon data) and emails a daily price-alert report with an Excel attachment, sorted by dollar difference.","Una aplicación en C# .NET que consulta SQL Server (la base del ERP y los datos de Amazon) y envía cada día por email un informe de alertas de precio con un Excel adjunto, ordenado por diferencia en dólares."],
   i:[["An estimated 2–3 weeks of manual comparison saved per run","30K+ SKUs reconciled across 7 channels","Used by the CEO and department heads for pricing decisions"],["Entre 2 y 3 semanas de comparación manual ahorradas por ejecución","Más de 30.000 SKUs conciliados en 7 canales","Lo usan el CEO y los responsables de área para decidir precios"]],
-  tags:["Python","PHP","MySQL","REST APIs","ETL"],sk:"price"},
+  tags:["C#",".NET","SQL Server","T-SQL","ClosedXML"],sk:"price"},
  {id:"profit",when:["Electriduct · Jul 2026","Electriduct · jul 2026"],t:["Profit & Break-Even Report","Informe de Rentabilidad y BEP"],
   p:["Pricing decisions were made without a clear view of cost, fees and margin per product and channel.","Las decisiones de precio se tomaban sin ver claramente coste, comisiones y margen por producto y canal."],
-  s:["A profitability report that calculates the break-even point per SKU and channel.","Un informe de rentabilidad que calcula el punto de equilibrio por SKU y canal."],
+  s:["A daily profit report that calculates the break-even price and margin per SKU, with a formula for each platform's fees (FBA, FBM, Walmart, eBay, Grainger, Zoro and web).","Un informe diario de rentabilidad que calcula el precio de equilibrio y el margen por SKU, con una fórmula según las comisiones de cada plataforma (FBA, FBM, Walmart, eBay, Grainger, Zoro y web)."],
   i:[["Break-even visible for every product","Feeds the price report with margin limits"],["Punto de equilibrio visible para cada producto","Alimenta el informe de precios con límites de margen"]],
-  tags:["SQL","Python"],sk:"profit"},
+  tags:["C#","SQL Server","Python"],sk:"profit"},
  {id:"stock",when:["Electriduct · Aug–Sep 2026","Electriduct · ago–sep 2026"],t:["Stock & Warehouse Reconciliation","Conciliación de Stock y Almacenes"],
   p:["Physical stock, virtual stock and the two warehouses disagreed, causing overselling and recounts.","El stock físico, el virtual y los dos almacenes no coincidían, provocando sobreventa y recuentos."],
   s:["Two reports: physical vs virtual stock (August) and SKU discrepancies between both warehouses (September).","Dos informes: stock físico vs virtual (agosto) y discrepancias de SKU entre ambos almacenes (septiembre)."],
   i:[["Discrepancies flagged before they reach customers","Recounts targeted to the locations that need them"],["Discrepancias detectadas antes de llegar al cliente","Recuentos dirigidos solo a las ubicaciones necesarias"]],
-  tags:["PHP","MySQL","JavaScript"],sk:"stock"},
+  tags:["C#","SQL Server","T-SQL"],sk:"stock"},
  {id:"ring",when:["Electriduct · Apr 2026","Electriduct · abr 2026"],t:["RingCentral Call Dashboard","Dashboard de llamadas RingCentral"],
   p:["The call dashboard showed zeros. The Analytics API doesn't work on developer accounts, and times were off by the New York → UTC shift.","El dashboard de llamadas mostraba ceros. La Analytics API no funciona en cuentas de desarrollador y las horas estaban desfasadas por el paso de Nueva York a UTC."],
   s:["Migrated to the Call Log API and rebuilt timezone handling end to end.","Migración a la Call Log API y reconstrucción completa del manejo de zonas horarias."],
@@ -511,7 +511,7 @@ const SK={
  price:()=>`<span class="ttl"><span>sku / price-diff</span><span>today</span></span>
   <div class="bar"><i style="width:80%"></i>Web</div><div class="bar"><i style="width:80%"></i>Amazon FBA</div><div class="bar"><i style="width:80%"></i>Amazon FBM</div>
   <div class="bar alt"><i style="width:64%"></i>Walmart ⚠</div><div class="bar"><i style="width:80%"></i>eBay</div>
-  <div class="bar"><i style="width:80%"></i>Grainger</div><div class="bar"><i style="width:80%"></i>Zoho</div>
+  <div class="bar"><i style="width:80%"></i>Grainger</div><div class="bar"><i style="width:80%"></i>Zoro</div>
   <span class="flag">price gaps flagged per SKU and channel</span>`,
  profit:()=>`<span class="ttl"><span>profit / bep</span><span>SKU-1042</span></span>
   <svg viewBox="0 0 220 110" width="100%" aria-hidden="true"><line x1="8" y1="100" x2="212" y2="100" stroke="var(--line)"/>
@@ -539,9 +539,9 @@ SKU list with locations</div>`,
 
 /* ---------- stack ---------- */
 const STACK=[
- ["Py","Python","Languages",["price","profit","mcp","tfm"]],["Sq","SQL","Languages",["price","profit","stock"]],["Ph","PHP","Languages",["price","stock","ring"]],["Js","JavaScript","Languages",["stock","ring","mcp"]],["C#","C#","Languages",[]],["Ps","PowerShell","Languages",[]],["Sh","Bash","Languages",["isp"]],
+ ["Py","Python","Languages",["price","profit","mcp","tfm"]],["Sq","SQL","Languages",["price","profit","stock"]],["Ph","PHP","Languages",["ring"]],["Js","JavaScript","Languages",["stock","ring","mcp"]],["C#","C#","Languages",["price","profit","stock"]],["Ps","PowerShell","Languages",["price"]],["Sh","Bash","Languages",["isp"]],
  ["Pd","pandas","AI / DS",["tfm","price"]],["Np","NumPy","AI / DS",["tfm"]],["Sk","scikit-learn","AI / DS",["tfm"]],["Xg","XGBoost","AI / DS",["tfm"]],["Sp","SHAP","AI / DS",["tfm"]],["Gr","Gradio","AI / DS",["tfm"]],["Ll","LLMs","AI / DS",["mcp"]],["Mc","MCP","AI / DS",["mcp"]],["Cc","Claude Code","AI / DS",["mcp"]],
- ["Ms","SQL Server","Data & Web",[]],["My","MySQL","Data & Web",["price","profit","stock"]],["Xl","Excel","Data & Web",["price"]],["Et","ETL","Data & Web",["price","stock"]],["Ap","REST APIs","Data & Web",["price","ring"]],["S4","Shift4Shop","Data & Web",["price"]],["Ht","HTML/CSS","Data & Web",["ring","stock"]],
+ ["Ms","SQL Server","Data & Web",["price","profit","stock"]],["My","MySQL","Data & Web",[]],["Xl","Excel","Data & Web",["price"]],["Et","ETL","Data & Web",["price","profit","stock"]],["Ap","REST APIs","Data & Web",["ring"]],["S4","Shift4Shop","Data & Web",["price"]],["Ht","HTML/CSS","Data & Web",["ring","price"]],
  ["Lx","Linux Server","Infra",["isp"]],["Ws","Windows Server","Infra",["isp"]],["Ad","Active Directory","Infra",[]],["Dn","DNS / DHCP","Infra",["isp"]],["As","Asterisk VoIP","Infra",["isp"]],["Pf","Postfix","Infra",["isp"]],["Ga","GitHub Actions","Infra",[]],
  ["Jn","Juniper","Network",["isp"]],["Mk","MikroTik","Network",["isp"]],["Hw","Huawei OLT","Network",["isp"]],
  ["Gt","Git","Practices",["tfm"]],["Fz","IT Forensics","Practices",[]]
