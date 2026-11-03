@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Adelardo López Sirvent — Data Engineer &amp; Software Developer</title>
-<meta name="description" content="Software developer with an MSc in Data Science. I build internal data tools, API integrations and Power BI reporting that turn sales, pricing and inventory data into decisions.">
+<meta name="description" content="Software developer with an MSc in Data Science. I build internal data tools, API integrations and SQL Server / C# development that turn sales, pricing and inventory data into decisions.">
 <meta property="og:title" content="Adelardo López Sirvent — Data Engineer &amp; Software Developer">
 <meta property="og:description" content="Price intelligence for 30K+ SKUs across 7 sales channels, profit and break-even, stock reconciliation and an MCP server for AI.">
 <meta property="og:image" content="photo.jpg">
@@ -267,7 +267,7 @@ footer{padding-block:28px;color:var(--muted);display:flex;justify-content:space-
   <div>
     <div class="status mono"><span class="dot"></span><span data-i18n="hero.status">Software Developer @ Electriduct · Pompano Beach, FL</span></div>
     <h1 data-i18n="hero.h1">Software that<br>runs on <em>data.</em></h1>
-    <p class="roles" data-i18n="hero.roles">Data Engineer · BI &amp; Power BI · Python / PHP Developer · MSc Data Science &amp; AI</p>
+    <p class="roles" data-i18n="hero.roles">Data Engineer · SQL Server &amp; C# · Python / PHP Developer · MSc Data Science &amp; AI</p>
     <div class="ctas">
       <a class="btn primary" href="#work" data-i18n="hero.cta1">See the work</a>
       <a class="btn" href="#contact" data-i18n="hero.cta2">Let's talk</a>
@@ -313,7 +313,7 @@ footer{padding-block:28px;color:var(--muted);display:flex;justify-content:space-
         <g class="node hot"><rect x="320" y="96" width="150" height="58" rx="8"/><text x="334" y="120">ETL layer</text><text class="sub" x="334" y="138">Python · PHP · cron</text></g>
         <g class="node hot"><rect x="540" y="96" width="140" height="58" rx="8"/><text x="554" y="120">MySQL</text><text class="sub" x="554" y="138">normalized SKUs</text></g>
         <g class="node" data-go="price"><rect x="790" y="10" width="160" height="40" rx="8"/><text x="802" y="35">Price Intelligence</text></g>
-        <g class="node" data-go="profit"><rect x="790" y="70" width="160" height="40" rx="8"/><text x="802" y="95">Profit / BEP · Power BI</text></g>
+        <g class="node" data-go="profit"><rect x="790" y="70" width="160" height="40" rx="8"/><text x="802" y="95">Profit / BEP report</text></g>
         <g class="node" data-go="stock"><rect x="790" y="135" width="160" height="40" rx="8"/><text x="802" y="160">Stock reconciliation</text></g>
         <g class="node" data-go="mcp"><rect x="790" y="200" width="160" height="40" rx="8"/><text x="802" y="225">QoH 3D · MCP → AI</text></g>
       </svg>
@@ -438,7 +438,7 @@ const T={
  "nav.about":["About","Sobre mí"],"nav.stack":["Stack","Stack"],"nav.work":["Work","Proyectos"],"nav.path":["Path","Trayectoria"],"nav.numbers":["Numbers","Cifras"],"nav.contact":["Contact","Contacto"],
  "hero.status":["Software Developer @ Electriduct · Pompano Beach, FL","Software Developer @ Electriduct · Pompano Beach, FL"],
  "hero.h1":["Software that<br>runs on <em>data.</em>","Software que<br>funciona con <em>datos.</em>"],
- "hero.roles":["Data Engineer · BI &amp; Power BI · Python / PHP Developer · MSc Data Science &amp; AI","Data Engineer · BI y Power BI · Desarrollador Python / PHP · Máster en Ciencia de Datos e IA"],
+ "hero.roles":["Data Engineer · SQL Server &amp; C# · Python / PHP Developer · MSc Data Science &amp; AI","Data Engineer · SQL Server y C# · Desarrollador Python / PHP · Máster en Ciencia de Datos e IA"],
  "hero.cta1":["See the work","Ver proyectos"],"hero.cta2":["Let's talk","Hablemos"],
  "hero.s1":["tools in production","herramientas en producción"],"hero.s2":["sales channels synced","canales de venta sincronizados"],"hero.s3":["saved per run","ahorradas por ejecución"],
  "hero.live":["Live intro","Intro en vivo"],
@@ -483,9 +483,9 @@ const P=[
   tags:["Python","PHP","MySQL","REST APIs","ETL"],sk:"price"},
  {id:"profit",when:["Electriduct · Jul 2026","Electriduct · jul 2026"],t:["Profit & Break-Even Report","Informe de Rentabilidad y BEP"],
   p:["Pricing decisions were made without a clear view of cost, fees and margin per product and channel.","Las decisiones de precio se tomaban sin ver claramente coste, comisiones y margen por producto y canal."],
-  s:["A profitability report that calculates the break-even point per SKU and channel, visualized in Power BI.","Un informe de rentabilidad que calcula el punto de equilibrio por SKU y canal, visualizado en Power BI."],
+  s:["A profitability report that calculates the break-even point per SKU and channel.","Un informe de rentabilidad que calcula el punto de equilibrio por SKU y canal."],
   i:[["Break-even visible for every product","Feeds the price report with margin limits"],["Punto de equilibrio visible para cada producto","Alimenta el informe de precios con límites de margen"]],
-  tags:["Python","SQL","Power BI","DAX"],sk:"profit"},
+  tags:["SQL","Python"],sk:"profit"},
  {id:"stock",when:["Electriduct · Aug–Sep 2026","Electriduct · ago–sep 2026"],t:["Stock & Warehouse Reconciliation","Conciliación de Stock y Almacenes"],
   p:["Physical stock, virtual stock and the two warehouses disagreed, causing overselling and recounts.","El stock físico, el virtual y los dos almacenes no coincidían, provocando sobreventa y recuentos."],
   s:["Two reports: physical vs virtual stock (August) and SKU discrepancies between both warehouses (September).","Dos informes: stock físico vs virtual (agosto) y discrepancias de SKU entre ambos almacenes (septiembre)."],
@@ -539,10 +539,9 @@ SKU list with locations</div>`,
 
 /* ---------- stack ---------- */
 const STACK=[
- ["Py","Python","Languages",["price","profit","mcp","tfm"]],["Sq","SQL","Languages",["price","profit","stock"]],["Ph","PHP","Languages",["price","stock","ring"]],["Js","JavaScript","Languages",["stock","ring","mcp"]],["Ps","PowerShell","Languages",[]],["Sh","Bash","Languages",["isp"]],
- ["Pb","Power BI","BI",["profit"]],["Dx","DAX","BI",["profit"]],["Xl","Excel","BI",["price"]],
+ ["Py","Python","Languages",["price","profit","mcp","tfm"]],["Sq","SQL","Languages",["price","profit","stock"]],["Ph","PHP","Languages",["price","stock","ring"]],["Js","JavaScript","Languages",["stock","ring","mcp"]],["C#","C#","Languages",[]],["Ps","PowerShell","Languages",[]],["Sh","Bash","Languages",["isp"]],
  ["Pd","pandas","AI / DS",["tfm","price"]],["Np","NumPy","AI / DS",["tfm"]],["Sk","scikit-learn","AI / DS",["tfm"]],["Xg","XGBoost","AI / DS",["tfm"]],["Sp","SHAP","AI / DS",["tfm"]],["Gr","Gradio","AI / DS",["tfm"]],["Ll","LLMs","AI / DS",["mcp"]],["Mc","MCP","AI / DS",["mcp"]],["Cc","Claude Code","AI / DS",["mcp"]],
- ["My","MySQL","Data & Web",["price","profit","stock"]],["Et","ETL","Data & Web",["price","stock"]],["Ap","REST APIs","Data & Web",["price","ring"]],["S4","Shift4Shop","Data & Web",["price"]],["Ht","HTML/CSS","Data & Web",["ring","stock"]],
+ ["Ms","SQL Server","Data & Web",[]],["My","MySQL","Data & Web",["price","profit","stock"]],["Xl","Excel","Data & Web",["price"]],["Et","ETL","Data & Web",["price","stock"]],["Ap","REST APIs","Data & Web",["price","ring"]],["S4","Shift4Shop","Data & Web",["price"]],["Ht","HTML/CSS","Data & Web",["ring","stock"]],
  ["Lx","Linux Server","Infra",["isp"]],["Ws","Windows Server","Infra",["isp"]],["Ad","Active Directory","Infra",[]],["Dn","DNS / DHCP","Infra",["isp"]],["As","Asterisk VoIP","Infra",["isp"]],["Pf","Postfix","Infra",["isp"]],["Ga","GitHub Actions","Infra",[]],
  ["Jn","Juniper","Network",["isp"]],["Mk","MikroTik","Network",["isp"]],["Hw","Huawei OLT","Network",["isp"]],
  ["Gt","Git","Practices",["tfm"]],["Fz","IT Forensics","Practices",[]]
@@ -593,7 +592,7 @@ const TL=[
  ["2022",["Experience","Experiencia"],["Systems Engineer","Ingeniero de Sistemas"],["Cableworld · Spain · May 2022 – Mar 2026","Cableworld · España · may 2022 – mar 2026"],["Triple-play operator (internet, phone and TV for homes). Brought service to new towns and built documentation servers. Ran enterprise Linux and Windows servers, DHCP, DNS, Asterisk VoIP and Postfix mail, and the core network (Juniper, MikroTik, Huawei OLTs). Level 3 support for broadband, VoIP, IPTV and WiMAX, and custom tools for traffic monitoring, ticketing and documentation.","Operador triple play (internet, telefonía y TV para hogares). Abrí nuevas poblaciones y monté servidores de documentación. Administré servidores Linux y Windows, DHCP, DNS, VoIP con Asterisk y correo Postfix, y la red troncal (Juniper, MikroTik, OLTs Huawei). Soporte de nivel 3 en banda ancha, VoIP, IPTV y WiMAX, y herramientas propias de monitorización de tráfico, ticketing y documentación."]],
  ["2024",["Expert witness","Perito"],["Court-Appointed IT Expert Witness","Perito Judicial Informático"],["CNIPJ, Spain · May 2024 – Present","CNIPJ, España · may 2024 – actualidad"],["Technical expert opinions in judicial proceedings involving IT systems and data.","Dictámenes técnicos en procedimientos judiciales sobre sistemas informáticos y datos."]],
  ["2024",["Education","Formación"],["MSc Data Science","Máster en Ciencia de Datos"],["KSchool / UNIR · 2024–2025","KSchool / UNIR · 2024–2025"],null],
- ["2026",["Experience","Experiencia"],["Software Developer","Software Developer"],["Electriduct · Pompano Beach, FL · Apr 2026 – Present","Electriduct · Pompano Beach, FL · abr 2026 – actualidad"],["Four internal data tools, the RingCentral integration, company Power BI reporting, and the Shift4Shop storefront and PHP app server.","Cuatro herramientas internas de datos, la integración con RingCentral, el reporting de Power BI de la empresa, y la tienda Shift4Shop y el servidor de aplicaciones PHP."],1],
+ ["2026",["Experience","Experiencia"],["Software Developer","Software Developer"],["Electriduct · Pompano Beach, FL · Apr 2026 – Present","Electriduct · Pompano Beach, FL · abr 2026 – actualidad"],["Four internal data tools, the RingCentral integration, SQL Server and C# development, and the Shift4Shop storefront and PHP app server.","Cuatro herramientas internas de datos, la integración con RingCentral, desarrollo con SQL Server y C#, y la tienda Shift4Shop y el servidor de aplicaciones PHP."],1],
  ["Next",["Open to work","Disponible"],["Your remote data team?","¿Tu equipo de datos remoto?"],[`<a href="#contact">Let's talk ↓</a>`,`<a href="#contact">Hablemos ↓</a>`],null]
 ];
 function renderTL(){const L=lang==='es'?1:0;
