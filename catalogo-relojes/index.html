@@ -6,7 +6,6 @@
 <title>Master Collections</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="description" content="Relojes disponibles: stock actualizado, fichas completas y contacto directo por WhatsApp.">
-<meta name="robots" content="noindex">
 <meta name="theme-color" content="#0d0c0b">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -199,7 +198,6 @@ textarea:focus{outline:0;border-color:var(--gold)}
 </head>
 <body>
 
-<div class="demo">Demo de propuesta · stock tomado de su canal y su Wallapop</div>
 
 <header>
   <div class="wrap hd">
@@ -266,17 +264,6 @@ textarea:focus{outline:0;border-color:var(--gold)}
     </div>
   </section>
 
-  <section class="admin" id="publicar">
-    <div class="wrap">
-      <div class="eyebrow">Para Toni · así se publica un reloj</div>
-      <h2 class="h2">Pega el mismo texto que ya usas y aparece en la web.</h2>
-      <p class="muted" style="max-width:60ch;margin:-14px 0 26px">La web entiende el formato de tus publicaciones (📍 Ref, 📏 Diámetro, ⚙️ Movimiento…). Prueba a editar el texto: la ficha se genera sola. En la versión final esto se guardaría en el catálogo con un clic.</p>
-      <div class="admin-box">
-        <textarea id="paste" spellcheck="false" aria-label="Texto de la publicación"></textarea>
-        <div class="parsed" id="parsed"></div>
-      </div>
-    </div>
-  </section>
 </main>
 
 <footer id="contacto">
@@ -291,7 +278,7 @@ textarea:focus{outline:0;border-color:var(--gold)}
       <a href="https://www.youtube.com/@MasterCollectionsClub" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.6 7.2a2.5 2.5 0 0 0-1.8-1.8C18.2 5 12 5 12 5s-6.2 0-7.8.4A2.5 2.5 0 0 0 2.4 7.2 26 26 0 0 0 2 12a26 26 0 0 0 .4 4.8 2.5 2.5 0 0 0 1.8 1.8C5.8 19 12 19 12 19s6.2 0 7.8-.4a2.5 2.5 0 0 0 1.8-1.8A26 26 0 0 0 22 12a26 26 0 0 0-.4-4.8zM10 15V9l5.2 3L10 15z"/></svg>YouTube</a>
     </div>
   </div>
-  <div class="wrap" style="margin-top:28px;font-size:12px">Demo no oficial preparada como propuesta. Precios y disponibilidad tomados del canal; confirmar siempre por WhatsApp.</div>
+  <div class="wrap" style="margin-top:28px;font-size:12px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap"><span>Precios y disponibilidad sujetos a confirmación por WhatsApp.</span><a href="https://adelardolopez.github.io/" target="_blank" rel="noopener" style="color:var(--ink2)">Web por Adelardo</a></div>
 </footer>
 
 <a class="fab" data-wa="general" href="#" target="_blank" rel="noopener" aria-label="Escribir por WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.5 14.4c-.3-.1-1.7-.8-2-.9-.3-.1-.5-.1-.7.1-.2.3-.8.9-.9 1.1-.2.2-.3.2-.6.1-.3-.1-1.2-.5-2.3-1.4-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6l.4-.5c.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5l-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.4s1 2.8 1.2 3c.1.2 2 3.1 4.9 4.3.7.3 1.2.5 1.7.6.7.2 1.3.2 1.8.1.6-.1 1.7-.7 1.9-1.4.2-.7.2-1.3.2-1.4-.1-.1-.3-.2-.6-.3zM12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2c-1.5 0-3-.4-4.2-1.2l-.3-.2-3.1.8.8-3-.2-.3A8.2 8.2 0 1 1 12 20.2z"/></svg></a>
@@ -322,7 +309,7 @@ const IMG = {"mb3": "img/mb3.jpg", "slim1": "img/slim1.jpg", "citizen4": "img/ci
 
 // ── CATÁLOGO ─────────────────────────────────────────────
 // status: "disponible" | "reservado" | "vendido"
-const WATCHES = [
+let WATCHES = [
   {
     id:"seiko-spb185j1", brand:"Seiko", model:"Prospex Baby Marinemaster", ref:"SPB185J1",
     diameter:"42 mm", movement:"Automático, calibre 6R35", type:"Automático", crystal:"Zafiro",
@@ -466,7 +453,7 @@ function card(w){
   const [lbl,cls] = STATUS[w.status];
   const isNew = daysAgo(w.date) <= 7 && w.status!=="vendido";
   return `<div class="card ${w.status==="vendido"?"is-sold":""}" data-id="${w.id}" role="button" tabindex="0" aria-label="Ver ${esc(w.brand+" "+w.model)}">
-    <div class="ph"><img loading="lazy" referrerpolicy="no-referrer" onerror="imgErr(this)" src="${src(w.imgs[0])}" alt="${esc(w.brand+" "+w.model)}">
+    <div class="ph"><img loading="lazy" referrerpolicy="no-referrer" onerror="imgErr(this)" src="${src(w.imgs[0])||"data:image/gif;base64,R0lGODlhAQABAAAAACw="}" alt="${esc(w.brand+" "+w.model)}">
       <span class="badge ${cls}"><i></i>${lbl}</span>${isNew?`<span class="new">Nuevo</span>`:""}</div>
     <div class="bd">
       <div class="br">${esc(w.brand)}</div>
@@ -508,7 +495,7 @@ function openModal(w){
   $("#info").innerHTML = `
     <div class="br">${esc(w.brand)}</div>
     <h2 id="m-title">${esc(w.model)}</h2>
-    <div class="st"><i style="background:var(--${w.status==="disponible"?"ok":w.status==="reservado"?"warn":"sold"})"></i>${lbl}${w.approx?"":" · publicado el "+fmtDate(w.date)}</div>
+    <div class="st"><i style="background:var(--${w.status==="disponible"?"ok":w.status==="reservado"?"warn":"sold"})"></i>${lbl}</div>
     <div class="pr">${eur(w.price)}</div>
     <dl class="specs">
       ${w.ref?`<div><dt>Referencia</dt><dd>${esc(w.ref)}</dd></div>`:""}
@@ -562,61 +549,63 @@ function route(){
 }
 window.addEventListener("hashchange", route);
 
-// ── parser del formato de Telegram ──────────────────────
-const SAMPLE = `⌚️ Tissot powermatic 80 ⌚️
-
-📍 Ref : T086.407.22.097.00
-📏 Diametro :42mm
-⚙️ Movimiento : automático
-🔎 Cristal : zafiro
-✅ Estado : 8/10
-📖 Contenido :  full set
-
-💰 429€ 💰
-
-Háblame por aquí : @Toniiabella`;
-
+// ── catálogo en vivo desde Google Sheets ────────────────
+const SHEET_ID = "1zdBOl9JTh6n2LqGDqWZMu0jqXF2JFqfdVSrUNT4UJzg";
+const SHEET_TAB = "Respuestas de formulario 1";
+const MULTI_BRANDS = ["TAG Heuer","Baume & Mercier","Maurice Lacroix","Frederique Constant","Grand Seiko","Jaeger-LeCoultre","Audemars Piguet","Patek Philippe","Vacheron Constantin","Raymond Weil","Hamilton Khaki","Oris Aquis","Victorinox Swiss Army","Christopher Ward","Sinn U1"].filter(b=>!/ (Khaki|Aquis|U1)$/.test(b));
+const clean = s => s.replace(/[\u{1F000}-\u{1FAFF}\u{2300}-\u{23FF}\u{2600}-\u{27BF}\u{2B00}-\u{2BFF}\u{FE0F}\u{200D}\u{2705}\u{2611}]/gu,"").trim();
+const cap = s => s ? s.charAt(0).toUpperCase()+s.slice(1) : s;
 function parsePost(txt){
-  const lines = txt.split(/\n/).map(l=>l.trim()).filter(Boolean);
-  const clean = s => s.replace(/[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE0F}\u{200D}\u{2B00}-\u{2BFF}]/gu,"").trim();
-  const field = re => { const l = lines.find(x=>re.test(clean(x))); return l ? clean(l).split(/:\s*/).slice(1).join(":").trim() : ""; };
-  const title = clean(lines[0]||"");
-  const brand = title.split(/\s+/)[0] || "";
-  const model = title.slice(brand.length).trim().replace(/\b\w/g,c=>c.toUpperCase());
+  const lines = String(txt||"").split(/\r?\n/).map(l=>l.trim()).filter(Boolean);
+  const field = re => { const l = lines.find(x=>re.test(clean(x))); return l ? clean(l).split(/\s*:\s*/).slice(1).join(":").trim() : ""; };
+  const title = clean(lines[0]||"").replace(/\s+/g," ");
+  const mb = MULTI_BRANDS.find(b=>title.toLowerCase().startsWith(b.toLowerCase()+" ") || title.toLowerCase()===b.toLowerCase());
+  const brand = mb || cap((title.split(" ")[0]||"").toLowerCase());
+  const model = cap(title.slice(brand.length).trim());
   const pl = lines.find(l=>/€/.test(l)) || "";
   const price = parseInt(pl.replace(/[^\d,]/g,"").split(",")[0]) || 0;
-  const cond = parseFloat((field(/^estado/i).match(/[\d.,]+/)||["0"])[0].replace(",", ".")) || 0;
-  const mov = field(/^movimiento/i);
-  return { brand: brand.charAt(0).toUpperCase()+brand.slice(1).toLowerCase(), model, ref: field(/^ref/i).toUpperCase(),
-    diameter: field(/^di[aá]metro/i).replace(/(\d)\s*mm/i,"$1 mm"), movement: mov.charAt(0).toUpperCase()+mov.slice(1),
-    crystal: (c=>c.charAt(0).toUpperCase()+c.slice(1))(field(/^cristal/i)), condition: cond, content: field(/^contenido/i), price, reserve: field(/^reserva/i), water: field(/^resistencia/i) };
+  const est = field(/^estado/i);
+  const m = est.match(/^([\d.,]+)\s*\/\s*10/);
+  const condition = m ? parseFloat(m[1].replace(",", ".")) : (est ? cap(est) : "");
+  const movement = cap(field(/^movimiento/i));
+  const wl = field(/^wallapop/i);
+  return { brand, model, ref: field(/^ref/i).toUpperCase(), diameter: field(/^di[aá]metro/i).replace(/(\d)\s*mm/i,"$1 mm"),
+    movement, crystal: cap(field(/^cristal/i)), condition, content: cap(field(/^contenido/i)), price,
+    reserve: cap(field(/^reserva/i)), water: field(/^resistencia/i), wallapop: /^https?:\/\//.test(wl) ? wl : "" };
 }
-function renderParsed(){
-  const w = parsePost($("#paste").value);
-  const ok = w.brand && w.ref && w.price;
-  $("#parsed").innerHTML = `
-    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px">
-      <span class="eyebrow">Ficha generada</span>
-      <span style="font-size:12px;color:${ok?"var(--ok)":"var(--warn)"}">${ok?"✓ Lista para publicar":"Faltan datos (marca, ref. o precio)"}</span>
-    </div>
-    <h3 style="font-family:var(--serif);font-size:28px;font-weight:600;margin:8px 0 2px">${esc(w.brand)} ${esc(w.model)}</h3>
-    <div style="font-size:24px;font-weight:700">${w.price?eur(w.price):"—"}</div>
-    <dl class="specs">
-      <div><dt>Referencia</dt><dd>${esc(w.ref||"—")}</dd></div>
-      <div><dt>Diámetro</dt><dd>${esc(w.diameter||"—")}</dd></div>
-      <div><dt>Movimiento</dt><dd>${esc(w.movement||"—")}</dd></div>
-      <div><dt>Cristal</dt><dd>${esc(w.crystal||"—")}</dd></div>
-      ${w.reserve?`<div><dt>Reserva de marcha</dt><dd>${esc(w.reserve)}</dd></div>`:""}
-      ${w.water?`<div><dt>Resistencia al agua</dt><dd>${esc(w.water)}</dd></div>`:""}
-      <div><dt>Estado</dt><dd>${w.condition?String(w.condition).replace(".",",")+"/10":"—"}</dd></div>
-      <div><dt>Contenido</dt><dd>${esc(w.content||"—")}</dd></div>
-    </dl>
-    <p class="muted" style="font-size:13px">+ subir las fotos y marcar como Disponible / Reservado / Vendido.</p>`;
+function typeOf(m){ m=(m||"").toLowerCase(); return /cuarzo|quartz/.test(m) ? (/solar/.test(m)?"Solar":"Cuarzo") : /solar|eco-?drive/.test(m) ? "Solar" : /cuerda|manual/.test(m) ? "Cuerda manual" : "Automático"; }
+function photoUrl(u){ u=u.trim(); const id=(u.match(/[?&]id=([\w-]+)/)||u.match(/\/d\/([\w-]+)/)||[])[1]; return /drive\.google\.com/.test(u)&&id ? `https://drive.google.com/thumbnail?id=${id}&sz=w1200` : u; }
+function parseTs(v,f){
+  let m=String(v).match(/^Date\((\d+),(\d+),(\d+)/); if(m) return `${m[1]}-${String(+m[2]+1).padStart(2,"0")}-${m[3].padStart(2,"0")}`;
+  m=String(f||v).match(/(\d{1,2})\/(\d{1,2})\/(\d{4})/); if(m) return `${m[3]}-${m[2].padStart(2,"0")}-${m[1].padStart(2,"0")}`;
+  return new Date().toISOString().slice(0,10);
 }
-$("#paste").value = SAMPLE;
-$("#paste").addEventListener("input", renderParsed);
+const slugify = s => s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
+async function loadSheet(){
+  const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&headers=1&sheet=${encodeURIComponent(SHEET_TAB)}&_=${Date.now()}`;
+  const txt = await (await fetch(url)).text();
+  const json = JSON.parse(txt.slice(txt.indexOf("{"), txt.lastIndexOf("}")+1));
+  const out = [], seen = {};
+  json.table.rows.forEach((r,i)=>{
+    const c = r.c || []; const val = k => c[k] ? (c[k].v ?? "") : ""; const fmt = k => c[k] ? (c[k].f ?? c[k].v ?? "") : "";
+    const post = String(val(1)); if(!post.trim()) return;
+    const w = parsePost(post); if(!w.brand || !w.price) return;
+    const est = String(val(3)).toLowerCase();
+    const status = est.startsWith("vend") ? "vendido" : est.startsWith("reserv") ? "reservado" : "disponible";
+    let id = slugify(`${w.brand}-${w.ref || w.model}`) || "reloj-"+i; if(seen[id]) id += "-"+i; seen[id]=1;
+    const imgs = String(val(2)).split(/\s*,\s*/).filter(Boolean).map(photoUrl);
+    out.push({ ...w, id, type: typeOf(w.movement), status, date: parseTs(val(0), fmt(0)), imgs: imgs.length?imgs:[""] });
+  });
+  return out;
+}
 
-stats(); render(); renderParsed(); route();
+stats(); render(); route();
+loadSheet().then(list=>{
+  if(!list.length) return;
+  WATCHES.length = 0; WATCHES.push(...list);
+  stats(); render();
+  if(location.hash.startsWith("#reloj-") && !$("#modal").classList.contains("open")) route();
+}).catch(e=>console.warn("Catálogo: usando copia local", e));
 </script>
 </body>
 </html>
