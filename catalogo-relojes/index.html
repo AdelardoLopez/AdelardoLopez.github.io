@@ -551,7 +551,7 @@ window.addEventListener("hashchange", route);
 
 // ── catálogo en vivo desde Google Sheets ────────────────
 const SHEET_ID = "1zdBOl9JTh6n2LqGDqWZMu0jqXF2JFqfdVSrUNT4UJzg";
-const SHEET_TAB = "Respuestas de formulario 1";
+const SHEET_TAB = "Stock";
 const MULTI_BRANDS = ["TAG Heuer","Baume & Mercier","Maurice Lacroix","Frederique Constant","Grand Seiko","Jaeger-LeCoultre","Audemars Piguet","Patek Philippe","Vacheron Constantin","Raymond Weil","Hamilton Khaki","Oris Aquis","Victorinox Swiss Army","Christopher Ward","Sinn U1"].filter(b=>!/ (Khaki|Aquis|U1)$/.test(b));
 const clean = s => s.replace(/[\u{1F000}-\u{1FAFF}\u{2300}-\u{23FF}\u{2600}-\u{27BF}\u{2B00}-\u{2BFF}\u{FE0F}\u{200D}\u{2705}\u{2611}]/gu,"").trim();
 const cap = s => s ? s.charAt(0).toUpperCase()+s.slice(1) : s;
@@ -576,6 +576,7 @@ function parsePost(txt){
 function typeOf(m){ m=(m||"").toLowerCase(); return /cuarzo|quartz/.test(m) ? (/solar/.test(m)?"Solar":"Cuarzo") : /solar|eco-?drive/.test(m) ? "Solar" : /cuerda|manual/.test(m) ? "Cuerda manual" : "Automático"; }
 function photoUrl(u){ u=u.trim(); const id=(u.match(/[?&]id=([\w-]+)/)||u.match(/\/d\/([\w-]+)/)||[])[1]; return /drive\.google\.com/.test(u)&&id ? `https://drive.google.com/thumbnail?id=${id}&sz=w1200` : u; }
 function parseTs(v,f){
+  if(typeof v==="number" || /^\d{5}([.,]\d+)?$/.test(String(v))){ const d=new Date(Date.UTC(1899,11,30)+parseFloat(String(v).replace(",","."))*864e5); return d.toISOString().slice(0,10); }
   let m=String(v).match(/^Date\((\d+),(\d+),(\d+)/); if(m) return `${m[1]}-${String(+m[2]+1).padStart(2,"0")}-${m[3].padStart(2,"0")}`;
   m=String(f||v).match(/(\d{1,2})\/(\d{1,2})\/(\d{4})/); if(m) return `${m[3]}-${m[2].padStart(2,"0")}-${m[1].padStart(2,"0")}`;
   return new Date().toISOString().slice(0,10);
