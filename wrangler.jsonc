@@ -1,6 +1,0 @@
-{
-  // Cloudflare Worker (static assets) for Master Collections stock site
-  "name": "mastercollections-stock",
-  "compatibility_date": "2025-09-01",
-  "assets": { "directory": "./catalogo-relojes" }
-}
